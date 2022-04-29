@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{siteLayouts/masterLayout}">
+<body>
+	<div layout:fragment="siteContent">
+		<th:block th:insert="./includes/messageSection :: message"></th:block>
+
+		<h1 id="wb-cont">Site Demo</h1>
+	 	<p>Hello World</p>
+	 	
+		<div id="navigationButtons">
+			<div class="row">
+				<div class="form-group text-center">
+					<div class="col-md-4 mrgn-bttm-sm">
+						<a class="btn btn-primary btn-lg mrgn-tp-md" id="login"
+							style="width: 100%" href="../authentication/login"
+							th:utext="#{button.login}">Login</a>
+					</div>
+					<div class="col-md-4 mrgn-bttm-sm">
+						<a class="btn btn-primary btn-lg mrgn-tp-md" id="logout"
+							style="width: 100%" href="../authentication/logout"
+							th:utext="#{button.logout}">Logout</a>
+					</div>
+					<div class="col-md-4 mrgn-bttm-sm">
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="form-group text-center">
+					<div class="col-md-4 mrgn-bttm-sm">
+						<a class="btn btn-primary btn-lg mrgn-tp-md" id="selectionList"
+							style="width: 100%" href="../examples/selectionList">Selection List</a>
+					</div>
+					<div class="col-md-4 mrgn-bttm-sm">
+						<a class="btn btn-primary btn-lg mrgn-tp-md" id="selectionList"
+							style="width: 100%" href="../examples/inputs">Input Fields</a>
+					</div>
+					<div class="col-md-4 mrgn-bttm-sm">
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+	</div>
+
+	<div class="clearfix"></div>
+</body>
+</html>

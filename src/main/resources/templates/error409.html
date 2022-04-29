@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{siteLayouts/masterLayout}"
+>
+  <body>
+    <div layout:fragment="siteContent">
+      <div class="row">
+        <div th:class="${formGroup1}">
+          <span class="glyphicon glyphicon-warning-sign glyphicon-error"></span>
+        </div>
+        <div th:class="${formGroup9}">
+          <h1 id="wb-cont" th:utext="#{error.409.title}">Error 409</h1>
+        </div>
+      </div>
+
+      <p>
+        <span th:utext="#{error.409.message}"
+          >Something is not right. Looks like we already have your application.
+          What's next?</span
+        >
+      </p>
+      <ul>
+        <li>
+          <span th:utext="#{error.return.to}"
+            >Please return to the landing page of
+          </span>
+          <a
+            th:href="|/${@environment.getProperty('operation.basePath')}|"
+            th:utext="#{application.title}"
+            >Site Demo</a
+          >
+          <span>.</span>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

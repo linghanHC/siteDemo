@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{siteLayouts/masterLayout}">
+<body>
+	<div layout:fragment="siteContent">
+		<th:block th:insert="./includes/messageSection :: message"></th:block>
+
+		<h1 id="wb-cont" th:utext="#{label.examples.selectionList.pageTitle}">Selection List</h1>
+
+		<br/>
+		
+		<form 
+			th:action="@{doSelectExpert}"
+			th:object="${expert}" method="post">
+			<!-- Selected Expert -->
+			<th:block
+				th:insert="./includes/selectAdvisorSection :: selectAdvisor"></th:block>
+
+			<div class="clearfix"></div>
+
+			<div class="mrgn-tp-md">
+				<div class="mrgn-tp-md pull-left">
+					<ul class="list-inline lst-spcd mrgn-rght-md">
+						<th:block th:if="${advisorList} != null"><li><button type="submit"
+								class="btn btn-primary btn-lg mrgn-tp-md" id="submit">
+								<span th:utext="#{button.continue}">Continue</span> <span
+									class="glyphicon glyphicon-arrow-right"></span>
+							</button></li></th:block>
+						<li><a class="btn btn-default btn-lg mrgn-tp-md" id="back"
+							style="width: 100%" href="../"><span
+								th:utext="#{button.back}">Back</span></a></li>
+					</ul>
+				</div>
+			</div>
+		</form>
+	</div>
+</body>
+</html>

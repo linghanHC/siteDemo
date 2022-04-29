@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+  layout:decorate="~{layouts/layout}"
+>
+  <head>
+    <meta charset="UTF-8">
+    <title th:utext="${pageTitle}"></title>
+
+    <meta name="dcterms.title" content="">
+    <meta name="dcterms.creator" content="GoC / GdC">
+    <meta name="dcterms.issued" title="W3CDTF" content="2015-01-22">
+    <meta name="dcterms.modified" title="W3CDTF" content="2015-01-22">
+    <meta name="dcterms.subject" title="scheme" content="">
+    <meta name="dcterms.language" title="ISO639-2" content="eng">
+  </head>
+  
+  <body
+    th:with="tableStyle='table table-condensed table-striped table-hover table-bordered small mrgn-bttm-md',
+    formGroup1='form-group col-lg-1 col-md-1 col-sm-2 col-xs-2 mrgn-bttm-sm mrgn-tp-sm',
+    formGroup2='form-group col-lg-2 col-md-2 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm',
+    formGroup3='form-group col-lg-3 col-md-3 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm',
+    formGroup4='form-group col-lg-4 col-md-4 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm',
+    formGroup5='form-group col-lg-5 col-md-5 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm',
+    formGroup6='form-group col-lg-6 col-md-6 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm',
+    formGroup7='form-group col-lg-7 col-md-7 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm ',
+    formGroup9='form-group col-lg-9 col-md-9 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm ',
+    formGroup12='form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm ',
+    formGroup12Warning='form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 mrgn-bttm-sm mrgn-tp-sm alert alert-warning',
+    formContr='form-control input-sm',
+    formContr100='form-control width100',
+    plusSign='glyphicon glyphicon-plus-sign text-primary mrgn-rght-sm',
+    minusSign='glyphicon glyphicon-minus-sign text-danger mrgn-rght-sm'"
+  >
+
+  <div layout:fragment="content">
+    <input type="hidden" id="_csrf" th:value="${_csrf.token}"/>
+    <!-- Default inactivity period is 20 minutes (1200000) -->
+    <!-- Default reaction time is 3 minutes (180000) -->
+    <!-- Default session alive time is 20 minutes (1200000) -->
+    <th:block th:if="${includeTimeout}">
+    	<span class="wb-sessto" th:data-wb-sessto="${@environment.getProperty('operation.timeout.values')}"></span>
+    </th:block>   
+    <div layout:fragment="siteContent">Main content goes here.</div>
+
+    <div class="clearfix"></div>
+	  <div class="row pagedetails">
+	    <div class="col-sm-6 col-lg-4 mrgn-tp-sm">
+        <a th:href="#{button.reportAProblem.url}" class="btn btn-default btn-block">
+          <span th:utext="#{button.reportAProblem}">Report a problem or mistake on this page</span></a>
+	    </div>
+	  </div>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<body>
+	<th:block th:fragment="selectAdvisor">
+		<div layout:fragment="selectAdvisor">
+			<div id="selectAdvisor">
+				<th:block th:if="${advisorList} == null">
+					<div class="col-md-12 mrgn-tp-md alert alert-warning">
+						<span th:utext="#{label.advisor.selectExpert.noAdvisor}">No
+							Available Advisor</span>
+					</div>
+				</th:block>
+				<th:block th:unless="${advisorList} == null">
+					<table class="wb-tables table table-hover"
+						data-wb-tables='{"ordering" : false}'>
+						<caption class="wb-inv"
+							th:utext="#{label.advisor.selectExpert.tableCaption}">Please
+							select an expert</caption>
+						<thead>
+							<tr>
+								<th></th>
+								<th scope="col" class="col-sm-4"><span
+									th:utext="#{label.examples.advisorId}">Advisor Id</span></th>
+								<th scope="col" class="col-sm-4"><span
+									th:utext="#{label.examples.firstName}">First Name</span></th>
+								<th scope="col" class="col-sm-4"><span
+									th:utext="#{label.examples.lastName}">Last Name</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="advisor, itemStat : ${advisorList}">
+								<td><input type="radio"
+									th:id="'advisorTblIndex' + ${itemStat.index}"
+									th:value="${itemStat.index}" th:name="advisorTblIndex"
+									th:checked="${itemStat.index}==0"></td>
+								<td th:text="${advisor.advisorId}">Advisor Id</td>
+								<td th:text="${advisor.firstName}">First Name</td>
+								<td th:text="${advisor.lastName}">Last Name</td>
+							</tr>
+						</tbody>
+					</table>
+				</th:block>
+			</div>
+		</div>
+	</th:block>
+</body>
+</html>

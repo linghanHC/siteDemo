@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{siteLayouts/masterLayout}">
+<body>
+	<div layout:fragment="siteContent">
+		<h1 id="wb-cont" th:utext="#{label.examples.inputFields.pageTitle}">Input
+			Fields</h1>
+
+		<div class="wb-frmvld">
+			<form id="inputFieldsForm"
+				th:action="@{doInputs}" th:object="${modelForm}"
+				method="post">
+				<div id="areasOfService">
+					<div class="panel panel-primary">
+						<div class="panel-heading">
+							<h2 class="panel-title mrgn-tp-0">
+								<span
+									th:utext="#{label.examples.inputFields.panelTitle}">Area
+									of Service</span>
+							</h2>
+						</div>
+						<div class="panel-body">
+							<div class="wb-frmvld"></div>
+
+							<div class="row">
+								<div class="form-inline col-md-6 text-left">
+									<input th:class="${formContr100}" th:field="*{isPharmaceutical}" type="checkbox" id="pharmaceutical"
+										name="pharmaceutical" value="0"
+										th:disabled="${userReadonlyAccess} ? 'disabled'"> <label
+										for="pharmaceutical"><span
+										th:utext="#{label.examples.inputFields.pharmaceutical}">Pharmaceutical</span></label>
+								</div>
+								<div class="form-inline col-md-6 text-left">
+									<input th:class="${formContr100}" th:field="*{isMedicalDevices}" type="checkbox" id="medicalDevices"
+										name="medicalDevices" value="1"
+										th:disabled="${userReadonlyAccess} ? 'disabled'"> <label
+										for="medicalDevices"><span
+										th:utext="#{label.examples.inputFields.medicalDevices}">Medical
+											Devices</span></label>
+								</div>
+							</div>
+							<div class="row">
+								<div class="form-inline col-md-6 text-left">
+									<input th:class="${formContr100}" th:field="*{isReconsiderationPanels}" type="checkbox" id="reconsiderationPanels"
+										name="reconsiderationPanels" value="2"
+										th:disabled="${userReadonlyAccess} ? 'disabled'"> <label
+										for="reconsiderationPanels"><span
+										th:utext="#{label.examples.inputFields.reconsiderationPanels}">Reconsideration
+											Panels</span></label>
+								</div>
+								<div class="form-inline col-md-6 text-left">
+									<input th:class="${formContr100}" th:field="*{isSapSac}"
+										type="checkbox" id="sapSac" name="sapSac" value="3"
+										th:disabled="${userReadonlyAccess} ? 'disabled'"> <label for="sapSac"><span
+										th:utext="#{label.examples.inputFields.sapSac}">SAP/SAC</span></label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div id="docRecived">
+					<table class="table" data-wb-tables='{"ordering" : false}'>
+						<caption class="wb-inv"
+							th:utext="#{label.examples.inputFields.dateReceived}">Documents
+							Received</caption>
+						<thead>
+							<tr>
+								<th scope="col" class="col-sm-4"><span
+									th:utext="#{label.examples.inputFields.item}">Item</span></th>
+								<th scope="col" class="col-sm-4"><span
+									th:utext="#{label.examples.inputFields.dateReceived}">Date
+										Received</span></th>
+								<th scope="col" class="col-sm-4"><span
+									th:utext="#{label.examples.inputFields.comments}">Comments</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><label for="securityClearanceForm"><span
+										th:utext="#{label.examples.inputFields.securityClearanceForm}">Security
+											Clearance Form</span></label></td>
+								<td><input th:class="${formContr100}" th:field="*{securityClearanceRecievedDate}" type="date"
+									id="securityClearanceForm" placeholder="dd-mm-yyyy"
+									th:readonly="${userReadonlyAccess} ? 'readonly'"></td>
+								<td><textarea th:class="${formContr}" th:field="*{securityClearanceComments}"
+										name="securityClearanceFormComments"
+										id="securityClearanceFormComments" rows="5" cols="100"
+										th:readonly="${userReadonlyAccess} ? 'readonly'"></textarea></td>
+							</tr>
+							<tr>
+								<td><label for="proofOfEducation"><span
+										th:utext="#{label.examples.inputFields.proofOfEducation}">Proof
+											of Education</span></label></td>
+								<td><input th:class="${formContr100}" th:field="*{proofOfEducationRecievedDate}" type="date"
+									id="proofOfEducation" placeholder="dd-mm-yyyy"
+									th:readonly="${userReadonlyAccess} ? 'readonly'"></td>
+								<td><textarea th:class="${formContr}" th:field="*{proofOfEducationComments}"
+										name="proofOfEducationComments" id="proofOfEducationComments"
+										rows="5" cols="100" th:readonly="${userReadonlyAccess} ? 'readonly'"></textarea></td>
+							</tr>
+							<tr>
+								<td><label for="curriculumVitae"><span
+										th:utext="#{label.examples.inputFields.curriculumVitae}">Curriculum
+											Vitae</span></label></td>
+								<td><input th:class="${formContr100}" th:field="*{cvRecievedDate}" type="date"
+									id="curriculumVitae" placeholder="dd-mm-yyyy"
+									th:readonly="${userReadonlyAccess} ? 'readonly'"></td>
+								<td><textarea th:class="${formContr}" th:field="*{cvComments}"
+										name="curriculumVitaeComments" id="curriculumVitaeComments"
+										rows="5" cols="100" th:readonly="${userReadonlyAccess} ? 'readonly'"></textarea></td>
+							</tr>
+							<tr>
+								<td><label for="proofOfBirthDate"><span
+										th:utext="#{label.examples.inputFields.proofOfBirthDate}">Proof
+											of Birth Date</span></label></td>
+								<td><input th:class="${formContr100}" th:field="*{proofOfBirthDateRecievedDate}" type="date"
+									id="proofOfBirthDate" placeholder="dd-mm-yyyy"
+									th:readonly="${userReadonlyAccess} ? 'readonly'"></td>
+								<td><textarea th:class="${formContr}" th:field="*{proofOfBirthDateComments}"
+										name="proofOfBirthDateComments" id="proofOfBirthDateComments"
+										rows="5" cols="100" th:readonly="${userReadonlyAccess} ? 'readonly'"></textarea></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<th:block th:insert="includes/navSection :: buttons"></th:block>
+				
+			</form>
+		</div>
+	</div>
+</body>
+</html>

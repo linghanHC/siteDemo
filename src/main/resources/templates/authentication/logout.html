@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{siteLayouts/masterLayout}">
+<body>
+	<div layout:fragment="siteContent">
+	 	<h1 id="wb-cont" th:utext="#{label.authentication.logout.pageTitle}">Logoff</h1>
+		
+		<div id="logout">
+			<span>You had successfully logged off Site Demo. Thank you!</span>
+		</div>
+	</div>
+	
+	<div class="clearfix"></div>
+</body>
+</html>

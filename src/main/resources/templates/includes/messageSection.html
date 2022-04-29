@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<body>
+	<th:block th:fragment="message">
+		<!--DISPLAY SUCCESS MESSAGE-->
+		<th:block th:if="${operationSuccess}">
+			<div class="alert alert-success" id="alert-success">
+				<h2>
+					<span th:utext="${successTitle}">Success Title</span>
+				</h2>
+				<p>
+					<span th:utext="${successMessage}">Success Message</span>
+				</p>
+			</div>
+		</th:block>
+	
+		<!--DISPLAY ERROR MESSAGE-->
+		<th:block th:if="${operationError}">
+		    <div class="alert alert-danger" id="alert-danger">
+				<h2>
+					<span th:utext="${errorTitle}">Error Title</span>!
+				</h2>
+				<p>
+					<span th:utext="${errorMessage}">Error Message</span>
+				</p>
+
+				<!--<a href="#" class="alert-link">link text</a>-->
+		    </div>
+		</th:block>				
+	</th:block>
+</body>

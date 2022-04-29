@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<body>
+	<th:block th:fragment="buttons">
+		<div class="mrgn-tp-md">
+			<div class="mrgn-tp-md pull-left">
+				<div th:if="${userReadonlyAccess}">
+					<ul class="list-inline lst-spcd mrgn-rght-md">
+						<li><a class="btn btn-default btn-lg mrgn-tp-md" id="back"
+							style="width: 100%" href="/advisor/advisorMenu"><span
+								th:utext="#{button.back}">Back</span></a></li>
+					</ul>
+				</div>
+				<div th:unless="${userReadonlyAccess}">
+					<ul class="list-inline lst-spcd mrgn-rght-md">
+						<li><button type="submit" id="saveButton"
+								class="btn btn-primary btn-lg mrgn-tp-md">
+								<span th:utext="#{button.save}">Save</span>
+							</button></li>
+						<li><a class="btn btn-default btn-lg mrgn-tp-md" id="back"
+							style="width: 100%" href="../"><span
+								th:utext="#{button.back}">Back</span></a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>

@@ -1,0 +1,42 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.6'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'ca.gc.hc'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+  COMMONS_LANG_VERSION = "3.9" // required by CDTS as a transitive dep
+  GSON_VERSION = "2.8.5" // for JSON support
+}
+
+compileJava {
+    options.compilerArgs += [
+        '-Amapstruct.defaultComponentModel=spring'
+    ]
+}
+
+dependencies {
+	annotationProcessor "org.projectlombok:lombok"
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation "org.springframework.boot:spring-boot-starter-security"
+	implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+	implementation "org.springframework.boot:spring-boot-starter-web"
+	implementation "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
+	implementation "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
+	implementation "com.google.code.gson:gson:$GSON_VERSION"
+	implementation fileTree(include: ["*.jar"], dir: "lib")	
+	compileOnly "org.projectlombok:lombok"
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

@@ -1,0 +1,71 @@
+/* <div class="row progressContainer">
+    <ul class="progressTracker">
+      <li class="active"><span class="field-name" th:utext="#{label.selectApplicant}">Select Applicant</span></li>
+      <li class="active"><span class="field-name" th:utext="#{label.applicant}">Applicant</span></li>
+      <li class="active"><span class="field-name" th:utext="#{label.affiliates}">Affiliates</span></li>
+      <li class="active"><span class="field-name" th:utext="#{label.review}">Review</span></li>
+      <li><span class="field-name" th:utext="#{label.submit}">Submit</span></li>
+    </ul>
+   </div> */
+
+/* Circle Progress tracker */
+.progressContainer {
+  width: 100%;
+  margin: 10px auto;
+}
+
+.progressTracker {
+  counter-reset: step;
+}
+
+.progressTracker li {
+  list-style-type: none;
+  width: 20%;
+  float: left;
+  font-size: 15px;
+  position: relative;
+  text-align: center;
+  text-transform: uppercase;
+  color: #7d7d7d;
+}
+
+.progressTracker li:before {
+  width: 50px; /* circle size */
+  height: 50px; /* circle size */
+  content: counter(step);
+  counter-increment: step;
+  line-height: 50px; /* numbers position */
+  border: 2px solid #7d7d7d;
+  display: block;
+  text-align: center;
+  margin: 0 auto 10px auto;
+  border-radius: 50%;
+  background-color: white;
+}
+
+.progressTracker li:after {
+  width: 100%;
+  height: 2px;
+  content: '';
+  position: absolute;
+  background-color: #7d7d7d;
+  top: 25px; /* line position */
+  left: -50%;
+  z-index: -1;
+}
+
+.progressTracker li:first-child:after {
+  content: none;
+}
+
+.progressTracker li.active {
+  color: royalblue;
+}
+
+.progressTracker li.active:before {
+  border-color: royalblue;
+}
+
+.progressTracker li.active+li:after {
+  background-color: royalblue;
+}
