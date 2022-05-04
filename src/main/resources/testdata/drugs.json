@@ -1,0 +1,84 @@
+[
+  {
+    "id": "49652",
+    "drug": {
+      "drugCode": 49652,
+      "brandNameE": "EFAMOL EXTRA STRENGTH PURE EVENING PRIMROSE OIL WITH VITAMIN E",
+      "drugIdentificationNumber": "02230572",
+      "companyCode": 4121,
+      "drugClassE": "Human",
+      "drugClassF": "Humain",
+      "classCode": 7,
+      "numberOfAis": 3,
+      "aiGroupNo": "0319893006",
+      "isScheduleCDinIssued": false
+    },
+    "companyName": "EFAMOL RESEARCH INC.",
+    "status": {
+      "statusID": 4,
+      "externalStatus": {
+        "externalStatusE": "Cancelled Post Market",
+        "externalStatusF": "Annul� apr�s commercialisation"
+      }
+    },
+    "pmE": "",
+    "pmF": "",
+    "firstAI": {
+      "drugCode": 0,
+      "ingredientE": "LINOLEIC ACID (EVENING PRIMROSE OIL)",
+      "ingredientF": "Acide linol�ique (Huile d\u0027onagre)",
+      "strength": "729",
+      "strengthUnitE": "MG",
+      "strengthUnitF": "MG"
+    },
+    "schedule": {
+      "scheduleE": "OTC",
+      "scheduleF": "En vente libre",
+      "scheduleCode": 0
+    },
+    "vetSpecies": {},
+    "isScheduleCDinIssued": true
+  },
+  {
+    "id": "50294",
+    "drug": {
+      "drugCode": 50294,
+      "brandNameE": "EFAMOL PURE LIQUID EVENING PRIMROSE OIL",
+      "drugIdentificationNumber": "02231013",
+      "companyCode": 4121,
+      "drugClassE": "Human",
+      "drugClassF": "Humain",
+      "classCode": 7,
+      "numberOfAis": 2,
+      "aiGroupNo": "0225422006",
+      "isScheduleCDinIssued": false
+    },
+    "companyName": "EFAMOL RESEARCH INC.",
+    "status": {
+      "statusID": 4,
+      "externalStatus": {
+        "externalStatusE": "Cancelled Post Market",
+        "externalStatusF": "Annul� apr�s commercialisation"
+      }
+    },
+    "pmE": "",
+    "pmF": "",
+    "firstAI": {
+      "drugCode": 0,
+      "ingredientE": "CIS-LINOLEIC ACID (EVENING PRIMROSE OIL)",
+      "ingredientF": "Acide cis-linol�ique (Huile d\u0027onagre)",
+      "strength": "670",
+      "strengthUnitE": "MG",
+      "strengthUnitF": "MG",
+      "dosageUnitE": "ML",
+      "dosageUnitF": "ML"
+    },
+    "schedule": {
+      "scheduleE": "OTC",
+      "scheduleF": "En vente libre",
+      "scheduleCode": 0
+    },
+    "vetSpecies": {},
+    "isScheduleCDinIssued": true
+  }
+]

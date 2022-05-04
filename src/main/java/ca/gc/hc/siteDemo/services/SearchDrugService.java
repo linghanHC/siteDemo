@@ -47,7 +47,7 @@ public class SearchDrugService {
 				ApplicationGlobals.QUERY_SEARCH_CRITERIA, criteria);
 		request.getSession().setAttribute(ApplicationGlobals.LAST_SEARCH_CRITERIA, criteria);
 
-//		log.debug("==>"+jsonBusinessService.serializeObjectToJsonString(results));
+//		log.debug("1==>"+jsonBusinessService.serializeObjectToJsonString(results));
 		return results;
 	}
 
@@ -88,7 +88,7 @@ public class SearchDrugService {
 				&& resultsSize < serverSideThreshold) {
 			// re-query for actual results
 			resultsList = dao.SearchByCriteria(criteria, request);
-			log.debug("==>"+jsonBusinessService.serializeObjectToJsonString(resultsList));
+			log.debug("2==>"+jsonBusinessService.serializeObjectToJsonString(resultsList));
 			request.getSession().setAttribute(
 					ApplicationGlobals.RESULT_COUNT_KEY, resultsList.size());
 		}
