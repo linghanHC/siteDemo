@@ -6,6 +6,7 @@ import ca.gc.hc.siteDemo.constants.Constants;
 import ca.gc.hc.siteDemo.constants.testData.InputFieldsTestData;
 import ca.gc.hc.siteDemo.dao.SearchDrugDao;
 import ca.gc.hc.siteDemo.forms.InputFieldsForm;
+import ca.gc.hc.siteDemo.forms.SearchForm;
 import ca.gc.hc.siteDemo.services.SearchDrugService;
 import ca.gc.hc.siteDemo.util.ApplicationGlobals;
 import org.slf4j.Logger;
@@ -40,8 +41,9 @@ public class SearchController extends BaseController {
 
 	  log.debug("==display searchpage");
 
-	  InputFieldsForm inputFieldsForm = InputFieldsTestData.getBasicInputFiledsTestData();
-	  inputFieldsForm.setFirstName("Ling");
+	  SearchForm searchForm = new SearchForm();
+	  searchForm.setDin("123456");
+
 
 	  // add style sheet for CSS print
 	  addCustomCssToModel(model);
@@ -50,7 +52,7 @@ public class SearchController extends BaseController {
 //      displaySuccessMessage(model, session, locale);
 //      displayErrorMessage(model, session, locale);
 
-	  model.addAttribute(Constants.MODEL_FORM, inputFieldsForm);
+	  model.addAttribute(Constants.SEARCH_FORM, searchForm);
 
 	  return Constants.SEARCH_VIEW;
   }

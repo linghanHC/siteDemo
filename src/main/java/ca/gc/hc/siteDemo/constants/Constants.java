@@ -68,6 +68,8 @@ public class Constants {
     public static final String MODEL_ERROR_MESSAGE = "errorMessage";
     public static final String MODEL_FORM = "modelForm";
 
+    public static final String SEARCH_FORM= "searchForm";
+
     //Cookies
     public static final String LANGUAGE_COOKIE = "lang";
     public static final String ENGLISH = "eng";

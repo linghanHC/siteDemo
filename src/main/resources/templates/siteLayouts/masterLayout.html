@@ -41,7 +41,9 @@
     <!-- Default session alive time is 20 minutes (1200000) -->
     <th:block th:if="${includeTimeout}">
     	<span class="wb-sessto" th:data-wb-sessto="${@environment.getProperty('operation.timeout.values')}"></span>
-    </th:block>   
+    </th:block>
+    <h1 id="wb-cont" th:utext="#{application.title}"></h1>
+    <p class="pagetag" th:utext="#{label.shared.byline}" /></p>
     <div layout:fragment="siteContent">Main content goes here.</div>
 
     <div class="clearfix"></div>
