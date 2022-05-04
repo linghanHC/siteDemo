@@ -6,6 +6,7 @@ import ca.gc.hc.siteDemo.constants.Constants;
 import ca.gc.hc.siteDemo.constants.testData.InputFieldsTestData;
 import ca.gc.hc.siteDemo.dao.SearchDrugDao;
 import ca.gc.hc.siteDemo.forms.InputFieldsForm;
+import ca.gc.hc.siteDemo.services.JsonBusinessService;
 import ca.gc.hc.siteDemo.services.SearchDrugService;
 import ca.gc.hc.siteDemo.util.ApplicationGlobals;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,6 +34,9 @@ public class SearchController extends BaseController {
 
 	@Autowired
 	private SearchDrugService service;
+
+	@Autowired
+	private JsonBusinessService jsonBusinessService;
 
   @RequestMapping(Constants.SEARCH_URL_MAPPING)
   public String display(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
@@ -107,7 +112,7 @@ public class SearchController extends BaseController {
 //			AjaxBean ajaxBean = null;
 			SearchCriteriaBean criteria = null;
 //			SearchForm thisForm = (SearchForm) form;
-			String nextPage = "";
+			String forward = "";
 
 			List list = new ArrayList();
 
@@ -137,7 +142,6 @@ public class SearchController extends BaseController {
 //					// Not an Ajax request: process for normal JSP
 
 					criteria = new SearchCriteriaBean();
-					criteria.setDin("02231008");	// TODO remove it, for test purpose only
 
 //					BeanUtils.copyProperties(criteria, thisForm);
 //					session.setAttribute(ApplicationGlobals.SELECTED_STATUS,
@@ -156,7 +160,8 @@ public class SearchController extends BaseController {
 //					 */
 //					if ((StringsUtil.hasData(thisForm.getAtc()) || (StringsUtil
 //							.hasData(thisForm.getDin())))) {
-						list = service.processSearchByAtcOrDin(request, criteria);
+						//criteria.setDin("02231008");	// TODO remove it, for test purpose only
+						//list = service.processSearchByAtcOrDin(request, criteria);
 //						/*
 //						 * SL/2012-09-04: If searching by DIN or ATC: remove
 //						 * default status value since this product may be
@@ -166,7 +171,15 @@ public class SearchController extends BaseController {
 //						 */
 //						//thisForm.setStatus(null);
 //					} else {
-//						list = service.processSearchByNames(request, criteria);
+						criteria.setCompanyName("EFAMOL RESEARCH INC."); // TODO remove it, for test purpose only
+						criteria.setBrandName("EVENING PRIMROSE OIL");
+				criteria.setDosage(new String[]{"0"});
+				criteria.setDrugClass(new String[]{"0"});
+				criteria.setRoute(new String[]{"0"});
+				criteria.setSchedule(new String[]{"0"});
+				criteria.setStatus(new String[]{"0"});
+				criteria.setVetSpecies(new String[]{"0"});
+						list = service.processSearchByNames(request, criteria);
 //					}
 
 					log.debug("Total match found: [" + list.size() + "].");
@@ -184,7 +197,7 @@ public class SearchController extends BaseController {
 //								ApplicationGlobals.SELECTED_PRODUCT,
 //								ActionUtil.postProcessDrugBean(bean, request));
 						redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
-						nextPage = Constants.SEARCH_RESULTS_URL_MAPPING;
+						forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 
 					} else if (list.size() > 1) {
 //						session.setAttribute(
@@ -196,7 +209,7 @@ public class SearchController extends BaseController {
 				log.error(e.getMessage());
 //				messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
 //						"error.failure.system"));
-//				forward = (mapping.getInputForward());
+				forward = Constants.ERROR_500_VIEW;
 
 			}
 
@@ -229,7 +242,7 @@ public class SearchController extends BaseController {
 
 
 
-		return redirectTo(nextPage);
+		return redirectTo(forward);
 	}
 
 	@RequestMapping(Constants.SEARCH_RESULTS_URL_MAPPING)

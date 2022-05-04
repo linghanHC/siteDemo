@@ -28,6 +28,8 @@ public class SearchDrugService {
 
 	@Autowired
 	private SearchDrugDao dao;
+	@Autowired
+	private JsonBusinessService jsonBusinessService;
 
 	@Value("${DT.server.processing.results.toggle}")		//todo set default value to 0 as struts app
 	protected int serverSideThreshold;
@@ -36,6 +38,7 @@ public class SearchDrugService {
 		List results = new ArrayList();
 
 		results = dao.SearchByCriteria(criteria, request);
+		// todo should these to be saved in session??
 		request.getSession().setAttribute(ApplicationGlobals.RESULT_COUNT_KEY,
 				results.size());
 		request.getSession().setAttribute(
@@ -44,6 +47,7 @@ public class SearchDrugService {
 				ApplicationGlobals.QUERY_SEARCH_CRITERIA, criteria);
 		request.getSession().setAttribute(ApplicationGlobals.LAST_SEARCH_CRITERIA, criteria);
 
+//		log.debug("==>"+jsonBusinessService.serializeObjectToJsonString(results));
 		return results;
 	}
 
@@ -74,19 +78,20 @@ public class SearchDrugService {
 //				.getDataTableServerProcessingThreshold();
 		log.debug("serverSideThreshold = " + serverSideThreshold);
 
-//		if (resultsSize > 0
-//				&& resultsSize >= serverSideThreshold) {
+		if (resultsSize > 0
+				&& resultsSize >= serverSideThreshold) {
 //			ActionUtil.setupForServerProcessing(request, dao);
 //			// Only get the first page of results
 //			resultsList = dao.getNextResults(criteria, request);
 //
-//		} else if(resultsSize > 0
-//				&& resultsSize < serverSideThreshold) {
+		} else if(resultsSize > 0
+				&& resultsSize < serverSideThreshold) {
 			// re-query for actual results
 			resultsList = dao.SearchByCriteria(criteria, request);
+			log.debug("==>"+jsonBusinessService.serializeObjectToJsonString(resultsList));
 			request.getSession().setAttribute(
 					ApplicationGlobals.RESULT_COUNT_KEY, resultsList.size());
-//		}
+		}
 		return resultsList;
 	}
 

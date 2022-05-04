@@ -1,0 +1,93 @@
+[
+  {
+    "companyId": "3574",
+    "drugProduct": {
+      "drugCode": 50289,
+      "brandNameE": "REFRESH TEARS",
+      "drugIdentificationNumber": "02231008",
+      "companyCode": 3574,
+      "drugClassE": "Human",
+      "drugClassF": "Humain",
+      "classCode": 7,
+      "numberOfAis": 1,
+      "aiGroupNo": "0107332003",
+      "biosimDrug": "",
+      "riskManPlan": "N",
+      "isScheduleCDinIssued": true,
+      "opioidManPlan": "N"
+    },
+    "activeIngredientList": [
+      {
+        "drugCode": 50289,
+        "ingredientE": "CARBOXYMETHYLCELLULOSE SODIUM",
+        "ingredientF": "Carboxym�thylcellulose sodique",
+        "strength": "0.5",
+        "strengthUnitE": "%",
+        "strengthUnitF": "%"
+      }
+    ],
+    "ahfsList": [],
+    "atcVO": {
+      "drugCode": 50289,
+      "atcNumber": "S01XA20",
+      "atcE": "ARTIFICIAL TEARS AND OTHER INDIFFERENT PREPARATIONS."
+    },
+    "companyVO": {
+      "companyCode": 3574,
+      "mfrCode": "ALL07",
+      "companyName": "ALLERGAN INC",
+      "companyType": "DIN OWNER",
+      "suiteNumner": "SUITE 500",
+      "streetNameE": "85 Enterprise Blvd",
+      "cityName": "Markham",
+      "provinceE": "Ontario",
+      "provinceF": "ONTARIO",
+      "countryE": "Canada",
+      "countryF": "CANADA",
+      "postalCode": "L6G 0B5"
+    },
+    "formList": [
+      {
+        "drugCode": 50289,
+        "pharmaceuticalFormE": "Drops",
+        "pharmaceuticalFormF": "Gouttes"
+      }
+    ],
+    "packagingList": [
+      {
+        "drugCode": 50289
+      }
+    ],
+    "routeList": [
+      {
+        "drugCode": 50289,
+        "routeOfAdministrationE": "Ophthalmic",
+        "routeOfAdministrationF": "Ophtalmique"
+      }
+    ],
+    "scheduleList": [
+      {
+        "drugCode": 50289,
+        "scheduleE": "OTC",
+        "scheduleF": "En vente libre",
+        "scheduleCode": 0
+      }
+    ],
+    "statusVO": {
+      "drugCode": 50289,
+      "statusID": 2,
+      "externalStatus": {
+        "externalStatusId": 2,
+        "externalStatusE": "Marketed",
+        "externalStatusF": "Commercialis�"
+      },
+      "historyDate": "Dec. 9, 1999",
+      "originalMarketDate": "Jul. 25, 1997"
+    },
+    "vetSpecies": [],
+    "riskMinMeasures": [],
+    "pharmMonitorActs": [],
+    "specialIdentifiers": [],
+    "biosimDrug": ""
+  }
+]
