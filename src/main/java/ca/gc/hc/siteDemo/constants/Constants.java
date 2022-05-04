@@ -76,4 +76,12 @@ public class Constants {
     //Switch Language
     public static final String FRENCH_TWO_CHARS = "fr";
 
+	//=====================
+	public static final String REDIRECT = "redirect:";
+
+	public static final String SEARCH_VIEW = "search";
+	public static final String SEARCH_URL_MAPPING = ROOT_URL_MAPPING + SEARCH_VIEW;
+
+	public static final String SEARCH_RESULTS_VIEW = "search_results";
+	public static final String SEARCH_RESULTS_URL_MAPPING = ROOT_URL_MAPPING + SEARCH_RESULTS_VIEW;
 }

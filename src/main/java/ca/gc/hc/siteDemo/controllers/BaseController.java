@@ -157,4 +157,8 @@ public class BaseController {
 
 	}
 
+	protected String redirectTo(String urlMapping) {
+		return Constants.REDIRECT + urlMapping;
+	}
+
 }

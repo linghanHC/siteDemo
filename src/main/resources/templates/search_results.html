@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{siteLayouts/masterLayout}">
+<body>
+<div layout:fragment="siteContent">
+	<h1 id="wb-cont" th:utext="#{label.search.results}">search.results</h1>
+
+
+	<th:block th:insert="includes/subHeader :: subHeader"></th:block>
+</div>
+</body>
+</html>

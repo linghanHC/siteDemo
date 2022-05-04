@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<body>
+<th:block th:fragment="subHeader">
+<!-- SUB-HEADER BEGINS | DEBUT DU SOUS EN-TETE -->
+	<div class="wb-eqht">
+		<section class="sect-lnks">
+			<h2 th:utext="#{label.h3.app.info}"></h2>
+			<ul class="list-unstyled">
+				<li><a th:href="#{link.sidebar.tips}" th:utext="#{label.sidebar.help}"> </a></li>
+				<li><a th:href="#{link.sidebar.terminology}" th:utext="#{label.sidebar.terminology}"> </a></li>
+				<li><a th:href="#{link.sidebar.extract}" th:utext="#{label.sidebar.extract.data}"> </a>
+ 				</li>
+ 			</ul>
+		</section>
+		<section class="sect-lnks">
+			<h2 th:utext="#{label.h3.related.info}"></h2>
+			<ul class="list-unstyled">
+				<li><a th:href="#{link.sidebar.advisories_warnings}" th:utext="#{label.sidebar.advisories_warnings}"> </a></li>
+				<li><a th:href="#{link.sidebar.parmacovigilance}" th:utext="#{label.sidebar.pharmacovigilance}"> </a></li>
+				<li><a th:href="#{link.sidebar.noc}" th:utext="#{label.sidebar.noc}"> </a></li>
+				<li><a th:href="#{link.sidebar.nhpd}" th:utext="#{ label.sidebar.nhpd}"></a></li>	
+			</ul>
+		</section>		
+		<section class="sect-lnks">
+			<h2 th:utext="#{label.h3.contact.us}"></h2>
+			<ul class="list-unstyled">
+				<li><a th:href="#{link.sidebar.sipdmail}" th:utext="#{label.sidebar.sipdmail}"> </a></li>
+				<li><a th:href="#{link.sidebar.contactinfo}" th:utext="#{label.sidebar.contactinfo}"></a></li>
+			</ul>	
+		</section>
+	</div>
+<!-- SUB-HEADER ENDS | FIN DU SOUS EN-TETE-->
+</th:block>
+</body>
+
