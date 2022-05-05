@@ -141,3 +141,11 @@ dd {
   position: absolute;
   width: 1px;
 }
+
+input[type=checkbox].larger {
+    position: relative;
+    width: 25px;
+    height: 25px;
+    left: 15px;
+    top: 5px;
+}

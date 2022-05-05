@@ -6,7 +6,7 @@
 >
   <head>
     <meta charset="UTF-8">
-    <title th:utext="${pageTitle}"></title>
+    <title th:utext="#{application.title}"></title>
 
     <meta name="dcterms.title" content="">
     <meta name="dcterms.creator" content="GoC / GdC">
@@ -46,7 +46,36 @@
     <p class="pagetag" th:utext="#{label.shared.byline}" /></p>
     <div layout:fragment="siteContent">Main content goes here.</div>
 
-    <div class="clearfix"></div>
+      <div class="wb-eqht">
+          <section class="sect-lnks">
+              <h2 th:utext="#{label.h3.app.info}" />
+              <ul class="list-unstyled">
+                  <li><a href="<bean:message key='link.sidebar.tips' />" th:utext="#{label.sidebar.help}" /></li>
+                  <li><a href="<bean:message key='link.sidebar.terminology' />" th:utext="#{label.sidebar.terminology}" /></li>
+                  <li><a href="<bean:message key='link.sidebar.extract' />" th:utext="#{label.sidebar.extract.data}" /></li>
+              </ul>
+          </section>
+          <section class="sect-lnks">
+              <h2 th:utext="#{label.h3.related.info}" /></h2>
+              <ul class="list-unstyled">
+                  <li><a href="<bean:message key='link.sidebar.advisories_warnings' />" th:utext="#{label.sidebar.advisories_warnings}" /></li>
+                  <li><a href="<bean:message key='link.sidebar.parmacovigilance' />" th:utext="#{label.sidebar.pharmacovigilance}" /></li>
+                  <li><a href="<bean:message key='link.sidebar.noc' />" th:utext="#{label.sidebar.noc}" /></li>
+                  <li><a href="<bean:message key='link.sidebar.nhpd'/>" th:utext="#{label.sidebar.nhpd}" /></a></li>
+              </ul>
+          </section>
+          <section class="sect-lnks">
+              <h2 th:utext="#{label.h3.contact.us}" />
+              <ul class="list-unstyled">
+                  <li><a href="<bean:message key='link.sidebar.sipdmail' />" th:utext="#{label.sidebar.sipdmail}" /></li>
+                  <li><a href="<bean:message key='link.sidebar.contactinfo'/>" th:utext="#{label.sidebar.contactinfo}" /></li>
+              </ul>
+          </section>
+      </div>
+
+      <div id="versionNumber" th:utext="#{label.version} + ' ' + #{version.number}"/>
+
+      <div class="clearfix"></div>
 	  <div class="row pagedetails">
 	    <div class="col-sm-6 col-lg-4 mrgn-tp-sm">
         <a th:href="#{button.reportAProblem.url}" class="btn btn-default btn-block">

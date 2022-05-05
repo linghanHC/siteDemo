@@ -2,9 +2,6 @@ package ca.gc.hc.siteDemo.forms;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import java.io.Serializable;
 
 /**
@@ -16,22 +13,20 @@ public class SearchForm implements Serializable
      *
      */
     private static final long serialVersionUID = -192278904074337015L;
-    private String drugCode = null;
     private String din = null;
     private String atc = null;
     private String companyName = null;
-    private String brandName = null;
+
+    private String productName = null;
     private String activeIngredient = null;
     private String aigNumber = null;
-    private String biosimDrugSearch = null;
-    private String biosimDrug = null;
-    private String[] status = null;
-    private String pm = null;
-    private String[] dosage = null;
-    private String[] schedule = null;
-    private String[] route = null;
-    private String[] drugClass = null;
-    private String[] vetSpecies = null;
+    private boolean biosimDrugSearch = false;
+    private String[] status = new String[]{"0"};
+    private String[] dosage = new String[]{"0"};
+    private String[] schedule = new String[]{"0"};
+    private String[] route = new String[]{"0"};
+    private String[] drugClass = new String[]{"0"};
+    private String[] vetSpecies = new String[]{"0"};
 
     public String getAigNumber()
     {
@@ -57,10 +52,10 @@ public class SearchForm implements Serializable
             return null;
     }
 
-    public String getBrandName()
+    public String getProductName()
     {
-        if( this.brandName != null)
-            return brandName.trim();
+        if( this.productName != null)
+            return productName.trim();
         else
             return null;
     }
@@ -77,14 +72,6 @@ public class SearchForm implements Serializable
     {
         if( this.din != null)
             return din.trim();
-        else
-            return null;
-    }
-
-    public String getDrugCode()
-    {
-        if( this.drugCode != null)
-            return drugCode.trim();
         else
             return null;
     }
@@ -127,7 +114,7 @@ public class SearchForm implements Serializable
     public void setBrandName(String string)
     {
         if( string != null)
-            brandName = string.trim();
+            productName = string.trim();
     }
 
     /**
@@ -151,15 +138,6 @@ public class SearchForm implements Serializable
     /**
      * @param string
      */
-    public void setDrugCode(String string)
-    {
-        if( string != null)
-            drugCode = string.trim();
-    }
-
-    /**
-     * @param string
-     */
     public void setStatus(String[] string)
     {
         if( string != null)
@@ -167,32 +145,17 @@ public class SearchForm implements Serializable
     }
 
 
-    public String getBiosimDrugSearch()
+    public boolean isBiosimDrugSearch()
     {
 
         return this.biosimDrugSearch;
     }
 
-    public void setBiosimDrugSearch(String string)
+    public void setBiosimDrugSearch(boolean biosimDrugSearch)
     {
-        if( string != null)
-            biosimDrugSearch = string.trim();
+            biosimDrugSearch = biosimDrugSearch;
     }
 
-    public String getBiosimDrug()
-    {
-
-        return this.biosimDrug;
-    }
-
-    /**
-     *
-     */
-    public void setBiosimDrugh(String string)
-    {
-        if( string != null)
-            biosimDrug = string.trim();
-    }
 
 /*
     public void reset()
@@ -303,34 +266,21 @@ public class SearchForm implements Serializable
     }*/
     public String toString()
     {
-        return new ToStringBuilder(this)
-                .append("drugCode", getDrugCode())
+/*        return new ToStringBuilder(this)
                 .append("din", getDin())
                 .append("atc", getAtc())
-                .append("biosimDrugSearch", getBiosimDrugSearch())
+                .append("biosimDrugSearch", isBiosimDrugSearch())
                 .append("status", getStatus().toString())
                 .append("companyName", getCompanyName())
-                .append("brandName", getBrandName())
+                .append("productName", getProductName())
                 .append("brandName", getActiveIngredient())
                 .append("productMonograph", getPm())
                 .append("route", getRoute().toString())
                 .append("dosage", getDosage().toString())
                 .append("vetSpecies", getVetSpecies().toString())
                 .append("schedule", getSchedule().toString())
-                .toString();
-    }
-    /**
-     * @return
-     */
-    public String getPm() {
-        return pm;
-    }
-
-    /**
-     * @param string
-     */
-    public void setPm(String string) {
-        pm = string;
+                .toString();*/
+        return null;
     }
 
     public String[] getDosage() {

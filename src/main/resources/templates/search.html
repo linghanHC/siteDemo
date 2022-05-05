@@ -38,14 +38,7 @@
 
 	<p class="help-block" th:utext="#{prompt.search.drug.instruction}"></p>
 	<div class="wb-frmvld">
-		<form id="searchForm"
-			  th:action="@{/search}" th:object="${searchForm}"
-			  method="post">
-	<!--
-            <html:form action="<%=myAction%>" method="post" styleClass="form-horizontal">
-                <input type="hidden" name="lang" value='<bean:message bundle="clfRes" key="label.app.lang" />'/>
-
-!-->
+		<form id="searchForm" th:action="@{/search}" th:object="${searchForm}" method="post" class="form-horizontal" role="form">
 			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.din}" /></legend>
 				<div class="form-group">
 					<label for="din" class="col-lg-3 control-label" th:utext="#{label.search.drug.din}"></label>
@@ -74,8 +67,8 @@
 					   <!--<logic:messagesPresent name="org.apache.struts.action.ERROR" property="status">
 						   <bean:message bundle="messageRes" key="error.invalide.status.without.anchor" />
 					   </logic:messagesPresent> -->
-					   <select id="status" th:field="*{status}" class="form-control" multiple="true" size="5" value="0">
-						   <option th:each="s:${statuses}" th:utext="${label}" th:value="${value}"/>
+					   <select id="status" th:field="*{status}" class="form-control" multiple="true" size="5">
+						   <option th:each="s:${statuses}" th:utext="${s.label}" th:value="${s.value}" th:selected="${s.value==0}"/>
 					   </select>
 				   </div>
 				</div>
@@ -94,7 +87,7 @@
 <!--					   <logic:messagesPresent name="org.apache.struts.action.ERROR" property="brandName">
 						   <bean:message bundle="messageRes" key="error.invalide.product.without.anchor" />
 					   </logic:messagesPresent>-->
-					   <input type="text" th:field="*{brandName}" id="product" maxlength="80" class="form-control" />
+					   <input type="text" th:field="*{productName}" id="product" maxlength="80" class="form-control" />
 				   </div>
 			    </div>
 				<div class="form-group">
@@ -117,16 +110,16 @@
 			    </div>
 
 			    <div class="form-group">
-				   <label for="biosimDrug"  class="col-lg-3 control-label" th:utext="#{label.search.drug.biosimDrug}"/> </label>
-				   <input type="checkbox" id="biosimDrug" th:checked="biosimDrugSearch" value="0" class="larger"/>
+				   <label for="biosimDrug"  class="col-lg-3 control-label" th:utext="#{label.search.drug.biosimDrug}"/></label>
+				   <input type="checkbox" id="biosimDrug" th:checked="${biosimDrugSearch}" class="larger"/>
 			    </div>
 
 			    <div class="form-group">
 				   <label for="drugClass" class="col-lg-3 control-label" th:utext="#{label.search.drug.class}"/></label>
 
 				   <div class="col-lg-9 mrgn-bttm-sm">
-					   <select name="search" property="drugClass" id="drugClass" multiple="true" size="5" class="form-control" >
-						   <option th:each="u:${uniqueDrugClasses}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select name="search" th:field="*{drugClass}" id="drugClass" multiple="true" size="5" class="form-control" >
+						   <option th:each="u:${drugClasses}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
@@ -134,8 +127,8 @@
 				   <label for="route" class="col-lg-3 control-label" th:utext="#{label.search.drug.route}"/></label>
 
 				   <div class="col-lg-9 mrgn-bttm-sm">
-					   <select th:field="*{route}" id="route" multiple="true" size="5" styleClass="form-control" >
-						   <option th:each="u:${uniqueRoutes}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select th:field="*{route}" id="route" multiple="true" size="5" class="form-control" >
+						   <option th:each="u:${routes}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
@@ -143,8 +136,8 @@
 				   <label for="dosage" class="col-lg-3 control-label" th:utext="#{label.search.drug.dosage.form}"/></label>
 
 				   <div class="col-lg-9 mrgn-bttm-sm">
-					   <select th:field="*{dosage}" id="dosage" multiple="true" size="5" styleClass="form-control" >
-						   <option th:each="u:${uniqueForms}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select th:field="*{dosage}" id="dosage" multiple="true" size="5" class="form-control" >
+						   <option th:each="u:${dosages}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
@@ -153,7 +146,7 @@
 
 				   <div class="col-lg-9">
 					   <select th:field="*{schedule}" id="schedule" multiple="true" size="5" class="form-control" >
-						   <option th:each="u:${uniqueSchedules}" th:utext="${u.label}" th:value="${u.value}" />
+						   <option th:each="u:${schedules}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
@@ -162,30 +155,22 @@
 
 				   <div class="col-lg-9">
 					   <select th:field="*{vetSpecies}" id="vetSpecies" multiple="true" size="5" class="form-control" >
-						   <option th:each="u:${uniqueSpecies}" th:utext="${u.label}" th:value="${u.value}" />
+						   <option th:each="u:${species}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
             </fieldset>
 
-			<!--<div class="form-group">
-                               <div class="col-lg-offset-3">
-                                   <html:submit property="method" styleClass="btn btn-primary mrgn-rght-sm mrgn-lft-md"><bean:message key="button.search" /></html:submit>
-                                   <html:reset property="method" styleClass="btn btn-default"><bean:message key="button.reset" />
-                                   </html:reset>
-                               </div>
-                           </div>
+			<div class="form-group">
+			   <div class="col-lg-offset-3">
+				   <input type="submit" class="btn btn-primary mrgn-rght-sm mrgn-lft-md" th:value="#{button.search}" />
+				   <input type="reset" class="btn btn-default" th:value="#{button.reset}" />
+			   </div>
+		    </div>
 
-
-                       </html:form>
-                   -->
 			<div class="clearfix"></div>
-
-			<th:block th:insert="includes/navSection :: buttons"></th:block>
 		</form>
 	</div>
-
-	<th:block th:insert="includes/subHeader :: subHeader"></th:block>
 </div>
 </body>
 </html>
