@@ -14,13 +14,18 @@ import org.springframework.util.FileCopyUtils;
 public class LocalTestDataBusinessService {
 
 	@Value("classpath:/testdata/drug.json")
-	private Resource productMasterListTestDataResource;
+	private Resource oneDrugDataResource;
+	@Value("classpath:/testdata/drugs.json")
+	private Resource multiDrugsDataResource;
 
 	@Autowired
 	private JsonBusinessService jsonBusinessService;
 
-	public String getProductMasterListTestData() {
-		return getTestData(productMasterListTestDataResource);
+	public String getOneDrugTestData() {
+		return getTestData(oneDrugDataResource);
+	}
+	public String getMultiDrugsTestData() {
+		return getTestData(multiDrugsDataResource);
 	}
 
 	private String getTestData(Resource testResource) {

@@ -162,8 +162,8 @@ public class SearchController extends BaseController {
 //					 */
 //					if ((StringsUtil.hasData(thisForm.getAtc()) || (StringsUtil
 //							.hasData(thisForm.getDin())))) {
-						//criteria.setDin("02231008");	// TODO remove it, for test purpose only
-						//list = service.processSearchByAtcOrDin(request, criteria);
+						criteria.setDin("02231008");	// TODO remove it, for test purpose only
+						list = service.processSearchByAtcOrDin(request, criteria);
 //						/*
 //						 * SL/2012-09-04: If searching by DIN or ATC: remove
 //						 * default status value since this product may be
@@ -173,15 +173,15 @@ public class SearchController extends BaseController {
 //						 */
 //						//thisForm.setStatus(null);
 //					} else {
-						criteria.setCompanyName("EFAMOL RESEARCH INC."); // TODO remove it, for test purpose only
-						criteria.setBrandName("EVENING PRIMROSE OIL");
-				criteria.setDosage(new String[]{"0"});
-				criteria.setDrugClass(new String[]{"0"});
-				criteria.setRoute(new String[]{"0"});
-				criteria.setSchedule(new String[]{"0"});
-				criteria.setStatus(new String[]{"0"});
-				criteria.setVetSpecies(new String[]{"0"});
-						list = service.processSearchByNames(request, criteria);
+//						criteria.setCompanyName("EFAMOL RESEARCH INC."); // TODO remove it, for test purpose only
+//						criteria.setBrandName("EVENING PRIMROSE OIL");
+//				criteria.setDosage(new String[]{"0"});
+//				criteria.setDrugClass(new String[]{"0"});
+//				criteria.setRoute(new String[]{"0"});
+//				criteria.setSchedule(new String[]{"0"});
+//				criteria.setStatus(new String[]{"0"});
+//				criteria.setVetSpecies(new String[]{"0"});
+//						list = service.processSearchByNames(request, criteria);
 //					}
 
 					log.debug("Total match found: [" + list.size() + "].");

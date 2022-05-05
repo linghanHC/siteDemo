@@ -7,6 +7,8 @@
  */
 package ca.gc.hc.siteDemo.services;
 
+import ca.gc.hc.siteDemo.bean.DrugBean;
+import ca.gc.hc.siteDemo.bean.DrugSummaryBean;
 import ca.gc.hc.siteDemo.bean.LabelValueBean;
 import ca.gc.hc.siteDemo.bean.SearchCriteriaBean;
 import ca.gc.hc.siteDemo.dao.SearchDrugDao;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +33,31 @@ public class SearchDrugService {
 	private SearchDrugDao dao;
 	@Autowired
 	private JsonBusinessService jsonBusinessService;
+	@Autowired
+	private LocalTestDataBusinessService localTestDataBusinessService;
+
+	@Value("${useLocalTestData:false}")
+	boolean useLocalTestData;
 
 	@Value("${DT.server.processing.results.toggle}")		//todo set default value to 0 as struts app
 	protected int serverSideThreshold;
 
+	  @PostConstruct
+  	private void postConstruct() {
+    	log.info("  useLocalTestData={}", useLocalTestData);
+		log.info("  serverSideThreshold={}", serverSideThreshold);
+  	}
+
 	public List processSearchByAtcOrDin(HttpServletRequest request, SearchCriteriaBean criteria) throws Exception {
 		List results = new ArrayList();
 
-		results = dao.SearchByCriteria(criteria, request);
+		if (useLocalTestData) {
+			String jsonString = localTestDataBusinessService.getOneDrugTestData();
+			return jsonBusinessService.deserializeJsonStringToObjectList(jsonString, DrugBean[].class);
+		} else {
+			results = dao.SearchByCriteria(criteria, request);
+			log.debug("1==>"+jsonBusinessService.serializeObjectToJsonString(results));
+		}
 		// todo should these to be saved in session??
 		request.getSession().setAttribute(ApplicationGlobals.RESULT_COUNT_KEY,
 				results.size());
@@ -47,7 +67,6 @@ public class SearchDrugService {
 				ApplicationGlobals.QUERY_SEARCH_CRITERIA, criteria);
 		request.getSession().setAttribute(ApplicationGlobals.LAST_SEARCH_CRITERIA, criteria);
 
-//		log.debug("1==>"+jsonBusinessService.serializeObjectToJsonString(results));
 		return results;
 	}
 
@@ -87,8 +106,13 @@ public class SearchDrugService {
 		} else if(resultsSize > 0
 				&& resultsSize < serverSideThreshold) {
 			// re-query for actual results
-			resultsList = dao.SearchByCriteria(criteria, request);
-			log.debug("2==>"+jsonBusinessService.serializeObjectToJsonString(resultsList));
+			if (useLocalTestData) {
+				String jsonString = localTestDataBusinessService.getMultiDrugsTestData();
+				resultsList= jsonBusinessService.deserializeJsonStringToDataCollection(jsonString, DrugSummaryBean.class).getData();
+			} else {
+				resultsList = dao.SearchByCriteria(criteria, request);
+			}
+//			log.debug("2==>"+jsonBusinessService.serializeObjectToJsonString(resultsList));
 			request.getSession().setAttribute(
 					ApplicationGlobals.RESULT_COUNT_KEY, resultsList.size());
 		}
