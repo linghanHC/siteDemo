@@ -1,19 +1,8 @@
 <!DOCTYPE html>
-<html
-  xmlns:th="http://www.thymeleaf.org"
-  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-  layout:decorate="~{layouts/layout}"
->
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}">
   <head>
-    <meta charset="UTF-8">
-    <title th:utext="${pageTitle}"></title>
-
-    <meta name="dcterms.title" content="">
-    <meta name="dcterms.creator" content="GoC / GdC">
-    <meta name="dcterms.issued" title="W3CDTF" content="2015-01-22">
-    <meta name="dcterms.modified" title="W3CDTF" content="2015-01-22">
-    <meta name="dcterms.subject" title="scheme" content="">
-    <meta name="dcterms.language" title="ISO639-2" content="eng">
+      <title th:utext="#{application.title}"></title>
   </head>
   
   <body
@@ -43,10 +32,39 @@
     	<span class="wb-sessto" th:data-wb-sessto="${@environment.getProperty('operation.timeout.values')}"></span>
     </th:block>
     <h1 id="wb-cont" th:utext="#{application.title}"></h1>
-    <p class="pagetag" th:utext="#{label.shared.byline}" /></p>
+    <p class="pagetag" th:utext="#{label.shared.byline}" />
     <div layout:fragment="siteContent">Main content goes here.</div>
 
-    <div class="clearfix"></div>
+      <div class="wb-eqht">
+          <section class="sect-lnks">
+              <h2 th:utext="#{label.h3.app.info}" />
+              <ul class="list-unstyled">
+                  <li><a th:href="#{link.sidebar.tips}" th:utext="#{label.sidebar.help}" /></li>
+                  <li><a th:href="#{link.sidebar.terminology}" th:utext="#{label.sidebar.terminology}" /></li>
+                  <li><a th:href="#{link.sidebar.extract}" th:utext="#{label.sidebar.extract.data}" /></li>
+              </ul>
+          </section>
+          <section class="sect-lnks">
+              <h2 th:utext="#{label.h3.related.info}" />
+              <ul class="list-unstyled">
+                  <li><a th:href="#{link.sidebar.advisories_warnings}" th:utext="#{label.sidebar.advisories_warnings}" /></li>
+                  <li><a th:href="#{link.sidebar.parmacovigilance}" th:utext="#{label.sidebar.pharmacovigilance}" /></li>
+                  <li><a th:href="#{link.sidebar.noc}" th:utext="#{label.sidebar.noc}" /></li>
+                  <li><a th:href="#{link.sidebar.nhpd}" th:utext="#{label.sidebar.nhpd}" /></li>
+              </ul>
+          </section>
+          <section class="sect-lnks">
+              <h2 th:utext="#{label.h3.contact.us}" />
+              <ul class="list-unstyled">
+                  <li><a th:href="#{link.sidebar.sipdmail}" th:utext="#{label.sidebar.sipdmail}" /></li>
+                  <li><a th:href="#{link.sidebar.contactinfo}" th:utext="#{label.sidebar.contactinfo}" /></li>
+              </ul>
+          </section>
+      </div>
+
+      <div id="versionNumber" th:utext="#{label.version} + ' ' + #{version.number}"/>
+
+      <div class="clearfix"></div>
 	  <div class="row pagedetails">
 	    <div class="col-sm-6 col-lg-4 mrgn-tp-sm">
         <a th:href="#{button.reportAProblem.url}" class="btn btn-default btn-block">

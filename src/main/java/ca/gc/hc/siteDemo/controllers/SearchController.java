@@ -1,6 +1,7 @@
 package ca.gc.hc.siteDemo.controllers;
 
 import ca.gc.hc.siteDemo.bean.DrugBean;
+import ca.gc.hc.siteDemo.bean.LabelValueBean;
 import ca.gc.hc.siteDemo.bean.MasterData;
 import ca.gc.hc.siteDemo.bean.SearchCriteriaBean;
 import ca.gc.hc.siteDemo.constants.Constants;
@@ -8,6 +9,7 @@ import ca.gc.hc.siteDemo.constants.testData.InputFieldsTestData;
 import ca.gc.hc.siteDemo.dao.SearchDrugDao;
 import ca.gc.hc.siteDemo.forms.InputFieldsForm;
 import ca.gc.hc.siteDemo.forms.SearchForm;
+import ca.gc.hc.siteDemo.models.Label;
 import ca.gc.hc.siteDemo.services.JsonBusinessService;
 import ca.gc.hc.siteDemo.services.SearchDrugService;
 import ca.gc.hc.siteDemo.util.ApplicationGlobals;
@@ -49,11 +51,8 @@ public class SearchController extends BaseController {
 
 
 	  log.debug("==display searchpage");
-	  log.debug(md.toString());
 
 	  SearchForm searchForm = new SearchForm();
-	  searchForm.setDin("123456");
-
 
 	  // add style sheet for CSS print
 	  addCustomCssToModel(model);
@@ -72,7 +71,7 @@ public class SearchController extends BaseController {
 
 	  model.addAttribute("statuses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
 			  md.getStatusMap().get(ApplicationGlobals.LANG_EN));
-	  model.addAttribute("uniqueDrugClasses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
+	  model.addAttribute("drugClasses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
 			  md.getDrugClassMap().get(ApplicationGlobals.LANG_EN));
 
 
