@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -27,9 +28,6 @@ public class WebConfig implements WebMvcConfigurer {
   /** The cdn template interceptor. */
   @Autowired
   private WETTemplateInterceptor cdnTemplateInterceptor;
-
-  @Autowired
-  MasterDataService mdService;
 
   // adds a template interceptor for the thymeleaf components defined in CDTS
   /** {@inheritDoc} */
@@ -74,13 +72,4 @@ public class WebConfig implements WebMvcConfigurer {
     return new LayoutDialect();
   }
 
-  @Bean
-  public MasterData loadMasterData() throws Exception {
-    System.out.println("===in loadMasterData===");
-    MasterData masterData = new MasterData();
-    masterData.setStatusMap(mdService.loadUniqueStatuses());
-    masterData.setDrugClassMap(mdService.loadUniqueDrugClasses());
-
-    return masterData;
-  }
 }
