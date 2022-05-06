@@ -2227,8 +2227,9 @@ public class SearchDrugDao  {
 	 */
 	private String localizedSearchColumnFor(String columnName) {
 		String result = "";
-		Boolean isFrench = ApplicationGlobals.LANG_FR.equals(ApplicationGlobals
-				.instance().getUserLocale().getLanguage());
+		Boolean isFrench = false; //todo move checking lang out of dao to ??
+//				ApplicationGlobals.LANG_FR.equals(ApplicationGlobals
+//				.instance().getUserLocale().getLanguage());
 
 		if (isFrench) {
 			result = columnName + "_f";
@@ -2272,9 +2273,10 @@ public class SearchDrugDao  {
 			 * Always sort by brand name, ascending, and DIN: therefore, this
 			 * CASE clause needs to be added
 			 */
-			Boolean isFrench = ApplicationGlobals.LANG_FR
-					.equals(ApplicationGlobals.instance().getUserLocale()
-							.getLanguage());
+			Boolean isFrench = false; // todo move checking lang out of dao
+//					ApplicationGlobals.LANG_FR
+//					.equals(ApplicationGlobals.instance().getUserLocale()
+//							.getLanguage());
 			if (isFrench) {
 				result = ", CASE WHEN DRUG.BRAND_NAME_F IS NOT NULL THEN UPPER(DRUG.BRAND_NAME_F)"
 						+ " WHEN DRUG.BRAND_NAME IS NOT NULL THEN upper(DRUG.BRAND_NAME)"
@@ -2349,8 +2351,9 @@ public class SearchDrugDao  {
 		int indexCounter = 0;
 		String ingredient = "";	 
 		
-		Boolean isFrench = ApplicationGlobals.LANG_FR.equals(ApplicationGlobals
-				.instance().getUserLocale().getLanguage());		
+		Boolean isFrench = false; //todo move checking lang out of dao to ??
+		// ApplicationGlobals.LANG_FR.equals(ApplicationGlobals
+//				.instance().getUserLocale().getLanguage());
 		
 		if (isFrench) 
 			columnName = INGREDIENT_COLUMN + "_F";

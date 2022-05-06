@@ -320,13 +320,14 @@ public class SearchCriteriaBean extends LocaleDependantObject implements Seriali
    *         comma and space, or the selectAll label, if no individual item was
    *         selected
    */
+  // todo move this to a util class
   private String enumerateThisStringArray(String[] anAra) {
     String result = "";
 
     if (anAra != null && anAra.length > 0) {
       if (anAra.length == 1 && anAra[0].toString().equals("0")) {
         // no individual item was selected: just return the selectAll label
-        result = ApplicationGlobals.instance().getSelectAllLabel();
+        result = "Select all"; // todo ApplicationGlobals.instance().getSelectAllLabel();
       } else {
         for (int i = 0; i < anAra.length; i++) {
           if (!"0".equals(anAra[i])) { // exclude value 0: it means "Select All" and was included in the selection

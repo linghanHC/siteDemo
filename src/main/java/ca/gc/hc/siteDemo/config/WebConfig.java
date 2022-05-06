@@ -2,6 +2,8 @@ package ca.gc.hc.siteDemo.config;
 
 import java.util.Locale;
 
+import ca.gc.hc.siteDemo.bean.MasterData;
+import ca.gc.hc.siteDemo.services.MasterDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -25,6 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
   /** The cdn template interceptor. */
   @Autowired
   private WETTemplateInterceptor cdnTemplateInterceptor;
+
+  @Autowired
+  MasterDataService mdService;
 
   // adds a template interceptor for the thymeleaf components defined in CDTS
   /** {@inheritDoc} */
@@ -67,5 +72,15 @@ public class WebConfig implements WebMvcConfigurer {
   @Bean
   public LayoutDialect layoutDialect() {
     return new LayoutDialect();
+  }
+
+  @Bean
+  public MasterData loadMasterData() throws Exception {
+    System.out.println("===in loadMasterData===");
+    MasterData masterData = new MasterData();
+    masterData.setStatusMap(mdService.loadUniqueStatuses());
+    masterData.setDrugClassMap(mdService.loadUniqueDrugClasses());
+
+    return masterData;
   }
 }

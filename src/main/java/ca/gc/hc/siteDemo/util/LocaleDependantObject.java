@@ -17,7 +17,7 @@ public abstract class LocaleDependantObject {
     public boolean isLanguageFrench() {
     	
 		
-	    return ApplicationGlobals.instance().LANG_FR.equals(getUserLocale().getLanguage());
+	    return ApplicationGlobals.LANG_FR.equals(getUserLocale().getLanguage());
     }
 
     /***************************************************************************
@@ -33,7 +33,8 @@ public abstract class LocaleDependantObject {
         if (userLocale != null) {
             return userLocale;
         }
-        return ApplicationGlobals.instance().getUserLocale();
+//        return ApplicationGlobals.getUserLocale();
+		return  null; //todo
     }
     
     /***************************************************************************

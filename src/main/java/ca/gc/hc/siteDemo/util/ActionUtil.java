@@ -319,7 +319,7 @@ public class ActionUtil		// TODO rename it
 	}
 
 	private static String fieldNameForColumnIndex(int index) throws Exception {
-		String lang = ApplicationGlobals.instance().getUserLanguage();
+		String lang = "en"; //todo ApplicationGlobals.getUserLanguage();
 		String fieldName = "";
 		String suffix = "";
 

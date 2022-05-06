@@ -1,6 +1,7 @@
 package ca.gc.hc.siteDemo.controllers;
 
 import ca.gc.hc.siteDemo.bean.DrugBean;
+import ca.gc.hc.siteDemo.bean.MasterData;
 import ca.gc.hc.siteDemo.bean.SearchCriteriaBean;
 import ca.gc.hc.siteDemo.constants.Constants;
 import ca.gc.hc.siteDemo.constants.testData.InputFieldsTestData;
@@ -39,12 +40,16 @@ public class SearchController extends BaseController {
 	@Autowired
 	private JsonBusinessService jsonBusinessService;
 
+	@Autowired
+	private MasterData md;
+
   @RequestMapping(Constants.SEARCH_URL_MAPPING)
   public String display(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
 	      Locale locale) {
 
 
 	  log.debug("==display searchpage");
+	  log.debug(md.toString());
 
 	  SearchForm searchForm = new SearchForm();
 	  searchForm.setDin("123456");
@@ -58,6 +63,18 @@ public class SearchController extends BaseController {
 //      displayErrorMessage(model, session, locale);
 
 	  model.addAttribute(Constants.SEARCH_FORM, searchForm);
+
+	  log.debug("statuses==>"+ (locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
+			  md.getStatusMap().get(ApplicationGlobals.LANG_EN).toString()));
+
+	  log.debug("uniqueDrugClasses==>"+ (locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
+			  md.getDrugClassMap().get(ApplicationGlobals.LANG_EN).toString()));
+
+	  model.addAttribute("statuses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
+			  md.getStatusMap().get(ApplicationGlobals.LANG_EN));
+	  model.addAttribute("uniqueDrugClasses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
+			  md.getDrugClassMap().get(ApplicationGlobals.LANG_EN));
+
 
 	  return Constants.SEARCH_VIEW;
   }

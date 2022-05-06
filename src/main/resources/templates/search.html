@@ -75,7 +75,7 @@
 						   <bean:message bundle="messageRes" key="error.invalide.status.without.anchor" />
 					   </logic:messagesPresent> -->
 					   <select id="status" th:field="*{status}" class="form-control" multiple="true" size="5" value="0">
-						   <option th:each="s:${statuses}" th:utext="${label}" th:value="${value}"/>
+						   <option th:each="s:${statuses}" th:utext="${s.label}" th:value="${s.value}"/>
 					   </select>
 				   </div>
 				</div>

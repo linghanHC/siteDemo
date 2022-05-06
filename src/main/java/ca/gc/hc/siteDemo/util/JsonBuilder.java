@@ -71,14 +71,14 @@ public class JsonBuilder extends LocaleDependantObject {
 
 	private String generateDinUrl(DrugSummaryBean jspBean) {
 		String drugCode = Long.toString(jspBean.getDrugCode());
-		String lang = ApplicationGlobals.instance().getUserLanguage();
+		String lang = "en"; //todo ApplicationGlobals.getUserLanguage();
 
 		// ex: <a href="/dpd-bdpp/info.do?code=81548&amp;lang=en">01234567</a>
 		StringBuilder sb = new StringBuilder(
 				"<a href=\"/dpd-bdpp/info.do?code=");
 		sb.append(drugCode);
 		sb.append("&amp;lang=");
-		sb.append(ApplicationGlobals.instance().getUserLanguage());
+		sb.append("en"); // todo ApplicationGlobals.instance().getUserLanguage()
 		sb.append("\">");
 		sb.append(jspBean.getDin());
 		sb.append("</a>");
