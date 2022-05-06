@@ -1,6 +1,7 @@
 package ca.gc.hc.siteDemo.services;
 
 import ca.gc.hc.siteDemo.bean.LabelValueBean;
+import ca.gc.hc.siteDemo.bean.MasterData;
 import ca.gc.hc.siteDemo.dao.SearchDrugDao;
 import ca.gc.hc.siteDemo.models.DrugClass;
 import ca.gc.hc.siteDemo.models.ExternalStatus;
@@ -9,7 +10,6 @@ import ca.gc.hc.siteDemo.util.ExternalStatusComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletContext;
@@ -129,7 +129,6 @@ public class MasterDataService {
 //		else userLanguage.set(ApplicationGlobals.LANG_FR); //Default value
 //
 //	}
-
 //	/***************************************************************************
 //	 * Gets a collection of all of the status that are in the system. These
 //	 * are Locale dependant, so initLocalization(request) must have already been
@@ -352,8 +351,7 @@ public class MasterDataService {
 	 * @author Sylvain Larivière 2010-01-25 Updated SL/2014-12-24 ADR0183 to
 	 *         implement external status codes
 	 */
-	@Cacheable("statuses")
-	public HashMap<String, List<LabelValueBean>> loadUniqueStatuses() throws Exception {
+	public HashMap<String, List<LabelValueBean>> loadUniqueStatuses() throws Exception { log.debug("  ** in service loadUniqueStatuses");
 		try {
 			List<ExternalStatus> allStatuses = dao.retrieveAllExternalStatuses();
 
@@ -374,7 +372,7 @@ public class MasterDataService {
 		HashMap<String, List<LabelValueBean>> statusMap = new HashMap<String,List<LabelValueBean>>();
 		statusMap.put(ApplicationGlobals.LANG_FR, generateUniqueStatusMapForLanguage(ApplicationGlobals.LANG_FR,
 				statusList));
-		statusMap.put(ApplicationGlobals.LANG_EN, generateUniqueStatusMapForLanguage(ApplicationGlobals.LANG_FR,
+		statusMap.put(ApplicationGlobals.LANG_EN, generateUniqueStatusMapForLanguage(ApplicationGlobals.LANG_EN,
 				statusList));
 		return statusMap;
 	}
@@ -403,14 +401,28 @@ public class MasterDataService {
 		return uniqueListItems;
 	}
 
+	public MasterData refreshAllSearchPageLists() throws Exception{ log.debug("  * in service refreshAllSearchPageLists");
+		MasterData md = new MasterData();
+//		statusMap.clear();
+		md.setStatusMap(loadUniqueStatuses());
+//		uniqueRoutesMap.clear();
+//		loadUniqueRoutes();
+//		uniqueFormsMap.clear();
+//		loadUniquePharmaceuticalForms();
+//		uniqueSchedulesMap.clear();
+//		loadUniqueSchedules();
+//		uniqueSpeciesMap.clear();
+//		loadUniqueSpecies();
+//		drugClassMap.clear();
+		md.setDrugClassMap(loadUniqueDrugClasses());
+		return md;
+	}
 
 	/**
 	 * Populates distinct drug classes for use in combo box. 
 	 * @author Sylvain Larivière 2014-10-15
 	 */
-	@Cacheable("drugClasses")
 	public HashMap<String,List<LabelValueBean>> loadUniqueDrugClasses() throws Exception {
-		log.debug("==in loadUniqueDrugClasses");
 		try {
 
 			List<DrugClass> allDrugClasses = dao.retrieveUniqueDrugClasses();

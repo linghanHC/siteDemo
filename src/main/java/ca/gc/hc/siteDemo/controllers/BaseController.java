@@ -1,5 +1,6 @@
 package ca.gc.hc.siteDemo.controllers;
 
+import java.util.Enumeration;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
@@ -161,4 +162,14 @@ public class BaseController {
 		return Constants.REDIRECT + urlMapping;
 	}
 
+	protected void logAllSessionAttributes(HttpSession session) {
+
+		Enumeration<String> keys = session.getAttributeNames();
+		System.out.println("=========start==========");
+		while (keys.hasMoreElements()) {
+			String key = (String) keys.nextElement();
+			System.out.println(key + ": " + session.getAttribute(key));
+		}
+		System.out.println("=========end==========");
+	}
 }
