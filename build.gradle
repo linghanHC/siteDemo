@@ -29,7 +29,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-security"
 	implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
 	implementation "org.springframework.boot:spring-boot-starter-web"
-	implementation "org.springframework.boot:spring-boot-starter-cache"
+	//implementation "org.springframework.boot:spring-boot-starter-cache"
 	implementation "org.springframework.boot:spring-boot-devtools"
 	implementation "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
 	implementation "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
