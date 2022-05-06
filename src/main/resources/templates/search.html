@@ -34,19 +34,12 @@
 		</p>
 	</div>
 
-	<h2 th:utext="#{label.search.criteria}"></h2>
+	<h2 th:utext="#{label.search.criteria}" />
 
 	<p class="help-block" th:utext="#{prompt.search.drug.instruction}"></p>
 	<div class="wb-frmvld">
-		<form id="searchForm"
-			  th:action="@{/search}" th:object="${searchForm}"
-			  method="post">
-	<!--
-            <html:form action="<%=myAction%>" method="post" styleClass="form-horizontal">
-                <input type="hidden" name="lang" value='<bean:message bundle="clfRes" key="label.app.lang" />'/>
-
-!-->
-			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.din}" /></legend>
+		<form id="searchForm" th:action="@{/search}" th:object="${searchForm}" method="post" class="form-horizontal" role="form">
+			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.din}" />
 				<div class="form-group">
 					<label for="din" class="col-lg-3 control-label" th:utext="#{label.search.drug.din}"></label>
 					<div class="col-lg-9">
@@ -58,18 +51,18 @@
 				</div>
 			</fieldset>
 
-			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.atc}" /></legend>
+			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.atc}" />
 				<div class="form-group">
-					<label for="atc" class="col-lg-3 control-label" th:utext="#{label.search.drug.atc}"/></label>
+					<label for="atc" class="col-lg-3 control-label" th:utext="#{label.search.drug.atc}"/>
 					<div class="col-lg-9">
 						<input type="text" th:field="*{atc}" size="7" id="atc" maxlength="7" class="form-control" />
 					</div>
 				</div>
 			</fieldset>
 
-			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.other}" /></legend>
+			<fieldset class="mrgn-tp-md"><legend th:utext="#{label.search.by.other}" />
 				<div class="form-group">
-				   <label for="status" class="col-lg-3 control-label" th:utext="#{label.search.drug.status}"/></label>
+				   <label for="status" class="col-lg-3 control-label" th:utext="#{label.search.drug.status}"/>
 				   <div class="col-lg-9 colmrgn-bttm-sm">
 					   <!--<logic:messagesPresent name="org.apache.struts.action.ERROR" property="status">
 						   <bean:message bundle="messageRes" key="error.invalide.status.without.anchor" />
@@ -80,7 +73,7 @@
 				   </div>
 				</div>
 				<div class="form-group">
-				   <label for="company" class="col-lg-3 control-label" th:utext="#{label.search.drug.company}"/></label>
+				   <label for="company" class="col-lg-3 control-label" th:utext="#{label.search.drug.company}"/>
 				   <div class="col-lg-9 mrgn-bttm-sm">
 <!--					   <logic:messagesPresent name="org.apache.struts.action.ERROR" property="companyName">
 						   <bean:message bundle="messageRes" key="error.invalide.company.without.anchor" />
@@ -89,16 +82,16 @@
 				   </div>
 				</div>
 				<div class="form-group">
-				   <label for="product" class="col-lg-3 control-label" th:utext="#{label.search.drug.product}"/></label>
+				   <label for="product" class="col-lg-3 control-label" th:utext="#{label.search.drug.product}"/>
 				   <div class="col-lg-9 mrgn-bttm-sm">
 <!--					   <logic:messagesPresent name="org.apache.struts.action.ERROR" property="brandName">
 						   <bean:message bundle="messageRes" key="error.invalide.product.without.anchor" />
 					   </logic:messagesPresent>-->
-					   <input type="text" th:field="*{brandName}" id="product" maxlength="80" class="form-control" />
+					   <input type="text" th:field="*{productName}" id="product" maxlength="80" class="form-control" />
 				   </div>
 			    </div>
 				<div class="form-group">
-					<label for="activeIngredient" class="col-lg-3 control-label" th:utext="#{label.search.drug.active.ingredient}"/></label>
+					<label for="activeIngredient" class="col-lg-3 control-label" th:utext="#{label.search.drug.active.ingredient}"/>
 					<div class="col-lg-9 mrgn-bttm-sm">
 <!--						<logic:messagesPresent name="org.apache.struts.action.ERROR" property="activeIngredient">
 							<bean:message bundle="messageRes" key="error.invalide.ai.without.anchor" />
@@ -107,7 +100,7 @@
 					</div>
 				</div>
 				<div class="form-group">
-				   <label for="aigNumber" class="col-lg-3 control-label" th:utext="#{label.search.drug.active.ingredient.group}"/></label>
+				   <label for="aigNumber" class="col-lg-3 control-label" th:utext="#{label.search.drug.active.ingredient.group}"/>
 				   <div class="col-lg-9 mrgn-bttm-sm">
 <!--					   <logic:messagesPresent name="org.apache.struts.action.ERROR" property="aigNumber">
 						   <bean:message bundle="messageRes" key="error.invalide.aig.without.anchor" />
@@ -117,34 +110,34 @@
 			    </div>
 
 			    <div class="form-group">
-				   <label for="biosimDrug"  class="col-lg-3 control-label" th:utext="#{label.search.drug.biosimDrug}"/> </label>
-				   <input type="checkbox" id="biosimDrug" th:checked="biosimDrugSearch" value="0" class="larger"/>
+				   <label for="biosimDrug"  class="col-lg-3 control-label" th:utext="#{label.search.drug.biosimDrug}"/>
+				   <input type="checkbox" id="biosimDrug" th:checked="${biosimDrugSearch}" class="larger"/>
 			    </div>
 
 			    <div class="form-group">
-				   <label for="drugClass" class="col-lg-3 control-label" th:utext="#{label.search.drug.class}"/></label>
+				   <label for="drugClass" class="col-lg-3 control-label" th:utext="#{label.search.drug.class}"/>
 
 				   <div class="col-lg-9 mrgn-bttm-sm">
-					   <select name="search" property="drugClass" id="drugClass" multiple="true" size="5" class="form-control" >
-						   <option th:each="u:${uniqueDrugClasses}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select name="search" th:field="*{drugClass}" id="drugClass" multiple size="5" class="form-control" >
+						   <option th:each="u:${drugClasses}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
 			    <div class="form-group">
-				   <label for="route" class="col-lg-3 control-label" th:utext="#{label.search.drug.route}"/></label>
+				   <label for="route" class="col-lg-3 control-label" th:utext="#{label.search.drug.route}"/>
 
 				   <div class="col-lg-9 mrgn-bttm-sm">
-					   <select th:field="*{route}" id="route" multiple="true" size="5" styleClass="form-control" >
-						   <option th:each="u:${uniqueRoutes}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select th:field="*{route}" id="route" multiple size="5" class="form-control" >
+						   <option th:each="u:${routes}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
 			    <div class="form-group">
-				   <label for="dosage" class="col-lg-3 control-label" th:utext="#{label.search.drug.dosage.form}"/></label>
+				   <label for="dosage" class="col-lg-3 control-label" th:utext="#{label.search.drug.dosage.form}"/>
 
 				   <div class="col-lg-9 mrgn-bttm-sm">
-					   <select th:field="*{dosage}" id="dosage" multiple="true" size="5" styleClass="form-control" >
-						   <option th:each="u:${uniqueForms}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select th:field="*{dosage}" id="dosage" multiple size="5" class="form-control" >
+						   <option th:each="u:${dosages}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
@@ -152,40 +145,32 @@
 				   <label for="schedule" class="col-lg-3 control-label" th:utext="#{label.search.drug.schedule}"/></label>
 
 				   <div class="col-lg-9">
-					   <select th:field="*{schedule}" id="schedule" multiple="true" size="5" class="form-control" >
-						   <option th:each="u:${uniqueSchedules}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select th:field="*{schedule}" id="schedule" multiple size="5" class="form-control" >
+						   <option th:each="u:${schedules}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
 			    <div class="form-group">
-				   <label for="vetSpecies" class="col-lg-3 control-label" th:utext="#{label.search.drug.species}"/></label>
+				   <label for="vetSpecies" class="col-lg-3 control-label" th:utext="#{label.search.drug.species}"/>
 
 				   <div class="col-lg-9">
-					   <select th:field="*{vetSpecies}" id="vetSpecies" multiple="true" size="5" class="form-control" >
-						   <option th:each="u:${uniqueSpecies}" th:utext="${u.label}" th:value="${u.value}" />
+					   <select th:field="*{vetSpecies}" id="vetSpecies" multiple size="5" class="form-control" >
+						   <option th:each="u:${species}" th:utext="${u.label}" th:value="${u.value}" />
 					   </select>
 				   </div>
 			    </div>
             </fieldset>
 
-			<!--<div class="form-group">
-                               <div class="col-lg-offset-3">
-                                   <html:submit property="method" styleClass="btn btn-primary mrgn-rght-sm mrgn-lft-md"><bean:message key="button.search" /></html:submit>
-                                   <html:reset property="method" styleClass="btn btn-default"><bean:message key="button.reset" />
-                                   </html:reset>
-                               </div>
-                           </div>
+			<div class="form-group">
+			   <div class="col-lg-offset-3">
+				   <input type="submit" class="btn btn-primary mrgn-rght-sm mrgn-lft-md" th:value="#{button.search}" />
+				   <input type="reset" class="btn btn-default" th:value="#{button.reset}" />
+			   </div>
+		    </div>
 
-
-                       </html:form>
-                   -->
 			<div class="clearfix"></div>
-
-			<th:block th:insert="includes/navSection :: buttons"></th:block>
 		</form>
 	</div>
-
-	<th:block th:insert="includes/subHeader :: subHeader"></th:block>
 </div>
 </body>
 </html>
