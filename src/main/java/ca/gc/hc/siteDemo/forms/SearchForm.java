@@ -17,9 +17,10 @@ public class SearchForm implements Serializable
     private String atc = null;
     private String companyName = null;
 
-    private String productName = null;
+    private String brandName = null;
     private String activeIngredient = null;
     private String aigNumber = null;
+
     private boolean biosimDrugSearch = false;
     private String[] status = new String[]{"0"};
     private String[] dosage = new String[]{"0"};
@@ -27,6 +28,8 @@ public class SearchForm implements Serializable
     private String[] route = new String[]{"0"};
     private String[] drugClass = new String[]{"0"};
     private String[] vetSpecies = new String[]{"0"};
+
+    private String selectedStatusText = null;
 
     public String getAigNumber()
     {
@@ -52,10 +55,10 @@ public class SearchForm implements Serializable
             return null;
     }
 
-    public String getProductName()
+    public String getBrandName()
     {
-        if( this.productName != null)
-            return productName.trim();
+        if( this.brandName != null)
+            return brandName.trim();
         else
             return null;
     }
@@ -114,7 +117,7 @@ public class SearchForm implements Serializable
     public void setBrandName(String string)
     {
         if( string != null)
-            productName = string.trim();
+            brandName = string.trim();
     }
 
     /**
@@ -144,76 +147,79 @@ public class SearchForm implements Serializable
             status = string;
     }
 
-
-    public boolean isBiosimDrugSearch()
-    {
-
-        return this.biosimDrugSearch;
+    public boolean isBiosimDrugSearch() {
+        return biosimDrugSearch;
     }
 
-    public void setBiosimDrugSearch(boolean biosimDrugSearch)
-    {
-            biosimDrugSearch = biosimDrugSearch;
+    public void setBiosimDrugSearch(boolean biosimDrugSearch) {
+        this.biosimDrugSearch = biosimDrugSearch;
     }
 
-
-/*
-    public void reset()
-    {
-        this.drugCode = null;
-        this.din = null;
-        this.atc = null;
-        this.status = new String[]{"-1"}; //Requested by ADR0250-1617, default "Select a status"
-        this.companyName = null;
-        this.brandName = null;
-        this.activeIngredient = null;
-        this.aigNumber = null;
-        this.biosimDrugSearch = null;
-        this.biosimDrug = null;
-        this.pm = null;
-        this.route = new String[]{"0"};
-        this.dosage = new String[]{"0"};
-        this.schedule = new String[]{"0"};
-        this.drugClass = new String[]{"0"};
-        this.vetSpecies = new String[]{"0"};
+    public String getSelectedStatusText() {
+        return selectedStatusText;
     }
 
-    public ActionErrors validate(
-            ActionMapping mapping,
-            HttpServletRequest request)
-    {
-        ActionErrors errors = new ActionErrors();
-        HttpSession session = request.getSession(false);
-        if (session.getAttribute("sessionActive") != null)
-        {
-            int count = 0;
+    public void setSelectedStatusText(String selectedStatusText) {
+        this.selectedStatusText = selectedStatusText;
+    }
 
-            if (din != null && din.length() > 0)
-            {
-                count++;
-
-                if ((din.length() != 8) || !StringUtils.isNumeric(din))
+    /*
+                public void reset()
                 {
-                    errors.add("DIN", new ActionMessage("error.invalide.din"));
+                    this.drugCode = null;
+                    this.din = null;
+                    this.atc = null;
+                    this.status = new String[]{"-1"}; //Requested by ADR0250-1617, default "Select a status"
+                    this.companyName = null;
+                    this.brandName = null;
+                    this.activeIngredient = null;
+                    this.aigNumber = null;
+                    this.biosimDrugSearch = null;
+                    this.biosimDrug = null;
+                    this.pm = null;
+                    this.route = new String[]{"0"};
+                    this.dosage = new String[]{"0"};
+                    this.schedule = new String[]{"0"};
+                    this.drugClass = new String[]{"0"};
+                    this.vetSpecies = new String[]{"0"};
                 }
-            }
 
-            if (atc != null && atc.length() > 0) {
-                count++;
+                public ActionErrors validate(
+                        ActionMapping mapping,
+                        HttpServletRequest request)
+                {
+                    ActionErrors errors = new ActionErrors();
+                    HttpSession session = request.getSession(false);
+                    if (session.getAttribute("sessionActive") != null)
+                    {
+                        int count = 0;
 
-            }
+                        if (din != null && din.length() > 0)
+                        {
+                            count++;
 
-            if ((companyName != null && companyName.length() > 0)
-                    || (brandName != null && brandName.length() > 0)
-                    || (activeIngredient != null && activeIngredient.length() > 0)
-                    || (aigNumber != null && aigNumber.length() > 0)
-                    || (dosage != null && dosage.length > 0)
-                    || (vetSpecies != null && vetSpecies.length > 0)
-                    || (schedule != null && schedule.length > 0)
-                    || (route != null && route.length > 0)
-                    || (biosimDrugSearch != null)) {
+                            if ((din.length() != 8) || !StringUtils.isNumeric(din))
+                            {
+                                errors.add("DIN", new ActionMessage("error.invalide.din"));
+                            }
+                        }
 
-                *//* if this is a din or atc search, disregard the default values
+                        if (atc != null && atc.length() > 0) {
+                            count++;
+
+                        }
+
+                        if ((companyName != null && companyName.length() > 0)
+                                || (brandName != null && brandName.length() > 0)
+                                || (activeIngredient != null && activeIngredient.length() > 0)
+                                || (aigNumber != null && aigNumber.length() > 0)
+                                || (dosage != null && dosage.length > 0)
+                                || (vetSpecies != null && vetSpecies.length > 0)
+                                || (schedule != null && schedule.length > 0)
+                                || (route != null && route.length > 0)
+                                || (biosimDrugSearch != null)) {
+
+                            *//* if this is a din or atc search, disregard the default values
                  * for dosage, schedule, and route ("0", for 'Select All')
                  *//*
                 String zero = "0";

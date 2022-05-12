@@ -2,7 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{siteLayouts/masterLayout}">
+<head>
+	<title th:utext="#{application.title}"></title>
+</head>
 <body>
+<h1 layout:fragment="h1" id="wb-cont" th:utext="#{application.title}"></h1>
 <div layout:fragment="siteContent">
 
 	<!--Display application error messages-->
@@ -87,7 +91,7 @@
 <!--					   <logic:messagesPresent name="org.apache.struts.action.ERROR" property="brandName">
 						   <bean:message bundle="messageRes" key="error.invalide.product.without.anchor" />
 					   </logic:messagesPresent>-->
-					   <input type="text" th:field="*{productName}" id="product" maxlength="80" class="form-control" />
+					   <input type="text" th:field="*{brandName}" id="product" maxlength="80" class="form-control" />
 				   </div>
 			    </div>
 				<div class="form-group">
@@ -111,7 +115,7 @@
 
 			    <div class="form-group">
 				   <label for="biosimDrug"  class="col-lg-3 control-label" th:utext="#{label.search.drug.biosimDrug}"/>
-				   <input type="checkbox" id="biosimDrug" th:checked="${biosimDrugSearch}" class="larger"/>
+				   <input type="checkbox" id="biosimDrug" th:field="*{biosimDrugSearch}" class="larger"/>
 			    </div>
 
 			    <div class="form-group">

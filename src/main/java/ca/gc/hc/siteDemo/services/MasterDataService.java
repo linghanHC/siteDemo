@@ -283,8 +283,7 @@ public class MasterDataService {
 //		}
 //		return selectAllLabel;
 //	}
-	
-	private String getSelectAllLabel(String language) {
+	public String getSelectAllLabel(String language) {
 		String selectAllLabel = "";
 		
 		if (language.equals(ApplicationGlobals.LANG_FR)) {
@@ -472,5 +471,4 @@ public class MasterDataService {
 		}
 		return uniqueListItems;
 	}
-
 }

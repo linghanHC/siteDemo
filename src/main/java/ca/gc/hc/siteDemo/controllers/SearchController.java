@@ -1,6 +1,7 @@
 package ca.gc.hc.siteDemo.controllers;
 
 import ca.gc.hc.siteDemo.bean.DrugBean;
+import ca.gc.hc.siteDemo.bean.LabelValueBean;
 import ca.gc.hc.siteDemo.bean.MasterData;
 import ca.gc.hc.siteDemo.bean.SearchCriteriaBean;
 import ca.gc.hc.siteDemo.constants.Constants;
@@ -83,7 +84,7 @@ public class SearchController extends BaseController {
 
 	@PostMapping("/search")
 	public String doSearch(Model model, HttpServletRequest request, Locale locale,
-						   @ModelAttribute InputFieldsForm modelForm, RedirectAttributes redirectAttributes) {
+						   @ModelAttribute SearchForm searchForm, RedirectAttributes redirectAttributes) {
 
 //		public String doSearch(Model model, HttpSession session, Locale locale,
 //				@Valid @ModelAttribute InputFieldsForm modelForm, BindingResult result) {
@@ -95,9 +96,9 @@ public class SearchController extends BaseController {
 //			}
 //		}
 		log.debug("==doSearch");
-		log.debug(modelForm.getFirstName());
+		log.debug(searchForm.getDin());
 
-
+		request.getSession().setAttribute("searchForm", searchForm);
 		// copied from SearchAction.execute()
 //		HttpSession session = request.getSession();
 //		ActionForward forward = new ActionForward();
@@ -131,9 +132,9 @@ public class SearchController extends BaseController {
 //			 * 10 or later of DataTables starts being used)
 //			 */
 //			AjaxBean ajaxBean = null;
-		SearchCriteriaBean criteria = null;
+//		SearchCriteriaBean criteria = null;
 //			SearchForm thisForm = (SearchForm) form;
-		String forward = "";
+		String forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 
 		List list = new ArrayList();
 
@@ -162,7 +163,7 @@ public class SearchController extends BaseController {
 //				} else {
 //					// Not an Ajax request: process for normal JSP
 
-			criteria = new SearchCriteriaBean();
+//			criteria = new SearchCriteriaBean();
 
 //					BeanUtils.copyProperties(criteria, thisForm);
 //					session.setAttribute(ApplicationGlobals.SELECTED_STATUS,
@@ -181,8 +182,8 @@ public class SearchController extends BaseController {
 //					 */
 //					if ((StringsUtil.hasData(thisForm.getAtc()) || (StringsUtil
 //							.hasData(thisForm.getDin())))) {
-			criteria.setDin("02231008");    // TODO remove it, for test purpose only
-			list = searchService.processSearchByAtcOrDin(request, criteria);
+//			criteria.setDin("02231008");    // TODO remove it, for test purpose only
+//			list = searchService.processSearchByAtcOrDin(request, criteria);
 //						/*
 //						 * SL/2012-09-04: If searching by DIN or ATC: remove
 //						 * default status value since this product may be
@@ -266,7 +267,10 @@ public class SearchController extends BaseController {
 	}
 
 	@RequestMapping(Constants.SEARCH_RESULTS_URL_MAPPING)
-	public String displaySearchResult(Model model, Locale locale) {
+	public String displaySearchResult(Model model, Locale locale, HttpServletRequest request) throws Exception {
+		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
+		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
+
 		log.debug("==displaySearchResult");
 		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
 			log.debug("drug bean is not in the redirect flash attribute");
@@ -279,4 +283,42 @@ public class SearchController extends BaseController {
 		return Constants.SEARCH_RESULTS_URL_MAPPING;
 	}
 
+
+	//TODO: from SearchCriteriaBean
+	private String getSelectedStatusText(String[] status, Locale locale, List<LabelValueBean> statusList) throws Exception{
+		String[] statusEnumeration = new String[status.length];
+		int i = 0;
+		for (String s : status) {
+			for (LabelValueBean statusLabel : statusList) {
+				if (s.equals(statusLabel.getValue())) {
+					statusEnumeration[i] = statusLabel.getLabel();
+					i++;
+				}
+			}
+		}
+		return enumerateThisStringArray(statusEnumeration, locale);
+	}
+
+	private String enumerateThisStringArray(String[] anAra, Locale locale) {
+		String result = "";
+
+		if (anAra != null && anAra.length > 0) {
+			if (anAra.length == 1 && anAra[0].toString().equals("0")) {
+				// no individual item was selected: just return the selectAll label
+				result = mdService.getSelectAllLabel(locale.getLanguage());
+			} else {
+				for (int i = 0; i < anAra.length; i++) {
+					if (!"0".equals(anAra[i])) { // exclude value 0: it means "Select All" and was included in the selection
+						String anAraLabel = anAra[i].replace("/Hc", "/HC");
+						result = result + anAraLabel + ", ";
+					}
+				}
+				result = result.substring(0, result.length() - 2); // remove last comma
+			}
+		} else {
+			result = null;
+		}
+
+		return result;
+	}
 }

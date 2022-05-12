@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}">
   <head>
-      <title th:utext="#{application.title}"></title>
+      <title></title>
   </head>
   
   <body
@@ -31,7 +31,7 @@
     <th:block th:if="${includeTimeout}">
     	<span class="wb-sessto" th:data-wb-sessto="${@environment.getProperty('operation.timeout.values')}"></span>
     </th:block>
-    <h1 id="wb-cont" th:utext="#{application.title}"></h1>
+    <h1 layout:fragment="h1" id="wb-cont"></h1>
     <p class="pagetag" th:utext="#{label.shared.byline}" />
     <div layout:fragment="siteContent">Main content goes here.</div>
 
