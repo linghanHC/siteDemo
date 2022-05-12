@@ -29,8 +29,6 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-security"
 	implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
 	implementation "org.springframework.boot:spring-boot-starter-web"
-	//implementation "org.springframework.boot:spring-boot-starter-cache"
-	implementation "org.springframework.boot:spring-boot-devtools"
 	implementation "nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect"
 	implementation "org.apache.commons:commons-lang3:$COMMONS_LANG_VERSION"
 	implementation "com.google.code.gson:gson:$GSON_VERSION"
@@ -39,6 +37,8 @@ dependencies {
 
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.6.7'
 	implementation 'org.hibernate:hibernate-core:5.6.4.Final'
+
+	developmentOnly "org.springframework.boot:spring-boot-devtools"
 
 	compileOnly "org.projectlombok:lombok"
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
