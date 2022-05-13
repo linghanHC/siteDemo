@@ -1,9 +1,6 @@
 package ca.gc.hc.siteDemo.controllers;
 
-import ca.gc.hc.siteDemo.bean.DrugBean;
-import ca.gc.hc.siteDemo.bean.LabelValueBean;
-import ca.gc.hc.siteDemo.bean.MasterData;
-import ca.gc.hc.siteDemo.bean.SearchCriteriaBean;
+import ca.gc.hc.siteDemo.bean.*;
 import ca.gc.hc.siteDemo.constants.Constants;
 import ca.gc.hc.siteDemo.forms.InputFieldsForm;
 import ca.gc.hc.siteDemo.forms.SearchForm;
@@ -11,8 +8,10 @@ import ca.gc.hc.siteDemo.services.JsonBusinessService;
 import ca.gc.hc.siteDemo.services.MasterDataService;
 import ca.gc.hc.siteDemo.services.SearchDrugService;
 import ca.gc.hc.siteDemo.util.ApplicationGlobals;
+import ca.gc.hc.siteDemo.util.StringsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -131,8 +130,8 @@ public class SearchController extends BaseController {
 //			 * See http://legacy.datatables.net/usage/server-side (until version
 //			 * 10 or later of DataTables starts being used)
 //			 */
-//			AjaxBean ajaxBean = null;
-//		SearchCriteriaBean criteria = null;
+			AjaxBean ajaxBean = null;
+			SearchCriteriaBean criteria = null;
 //			SearchForm thisForm = (SearchForm) form;
 		String forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 
@@ -163,9 +162,9 @@ public class SearchController extends BaseController {
 //				} else {
 //					// Not an Ajax request: process for normal JSP
 
-//			criteria = new SearchCriteriaBean();
+					criteria = new SearchCriteriaBean();
 
-//					BeanUtils.copyProperties(criteria, thisForm);
+					BeanUtils.copyProperties(searchForm, criteria);
 //					session.setAttribute(ApplicationGlobals.SELECTED_STATUS,
 //							criteria.getStatusCode());
 //					/*
@@ -177,13 +176,13 @@ public class SearchController extends BaseController {
 //					ActionUtil.mapDrugClassNames(criteria.getDrugClass(),
 //							session);
 //
-//					/*
-//					 * Determine type of search and process accordingly
-//					 */
-//					if ((StringsUtil.hasData(thisForm.getAtc()) || (StringsUtil
-//							.hasData(thisForm.getDin())))) {
+					/*
+					 * Determine type of search and process accordingly
+					 */
+					if ((StringsUtil.hasData(searchForm.getAtc()) || (StringsUtil
+							.hasData(searchForm.getDin())))) {
 //			criteria.setDin("02231008");    // TODO remove it, for test purpose only
-//			list = searchService.processSearchByAtcOrDin(request, criteria);
+			list = searchService.processSearchByAtcOrDin(request, criteria);
 //						/*
 //						 * SL/2012-09-04: If searching by DIN or ATC: remove
 //						 * default status value since this product may be
@@ -192,7 +191,7 @@ public class SearchController extends BaseController {
 //						 * as part of its criteria
 //						 */
 //						//thisForm.setStatus(null);
-//					} else {
+					} else {
 //						criteria.setCompanyName("EFAMOL RESEARCH INC."); // TODO remove it, for test purpose only
 //						criteria.setBrandName("EVENING PRIMROSE OIL");
 //				criteria.setDosage(new String[]{"0"});
@@ -201,8 +200,8 @@ public class SearchController extends BaseController {
 //				criteria.setSchedule(new String[]{"0"});
 //				criteria.setStatus(new String[]{"0"});
 //				criteria.setVetSpecies(new String[]{"0"});
-//						list = service.processSearchByNames(request, criteria);
-//					}
+						list = searchService.processSearchByNames(request, criteria);
+					}
 
 			log.debug("Total match found: [" + list.size() + "].");
 
@@ -219,8 +218,6 @@ public class SearchController extends BaseController {
 //								ApplicationGlobals.SELECTED_PRODUCT,
 //								ActionUtil.postProcessDrugBean(bean, request));
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
-				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
-
 			} else if (list.size() > 1) {
 //						session.setAttribute(
 //								ApplicationGlobals.SEARCH_RESULT_KEY, list);
@@ -240,22 +237,25 @@ public class SearchController extends BaseController {
 //				saveMessages(request, messages);
 //				forward = (mapping.getInputForward());
 //			}
-//
+
+			if (ajaxBean != null ){
 //			if (ajaxBean != null
 //					&& AjaxRequestStatus.ACTIVE == ajaxBean.getAjaxStatus()) {
-//				forward = null;
-//			} else if (list.size() > 1) {
+				forward = null;
+			} else if (list.size() > 1) {
 //				request.getSession().setAttribute(
 //						ApplicationGlobals.SEARCH_RESULT_KEY, list);
 //				forward = (mapping.findForward("multiplematch"));
-//			} else if (list.size() == 1) {
+				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
+			} else if (list.size() == 1) {
 //				forward = (mapping.findForward("onematch"));
-//			} else {
+				forward = Constants.PRODUCT_INFO_URL_MAPPING;
+			} else {
 //				messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
 //						"error.failure.system"));
 //				saveMessages(request, messages);
 //				forward = (mapping.getInputForward());
-//			}
+			}
 //
 //		} else {
 //			// inactive session
@@ -275,12 +275,29 @@ public class SearchController extends BaseController {
 		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
 			log.debug("drug bean is not in the redirect flash attribute");
 		} else {
+			// todo it is a list of object or no match found message
 			DrugBean bean = (DrugBean) model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT);
 			log.debug(bean.toString());
 		}
 
-
 		return Constants.SEARCH_RESULTS_URL_MAPPING;
+	}
+
+	@RequestMapping(Constants.PRODUCT_INFO_URL_MAPPING)
+	public String displayProductInfo(Model model, Locale locale, HttpServletRequest request) throws Exception {
+		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
+		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
+
+		log.debug("==displayProductInfo");
+		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
+			log.debug("drug bean is not in the redirect flash attribute");
+		} else {
+			DrugBean bean = (DrugBean) model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT);
+			log.debug(bean.toString());
+			model.addAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
+		}
+
+		return Constants.PRODUCT_INFO_URL_MAPPING;
 	}
 
 
