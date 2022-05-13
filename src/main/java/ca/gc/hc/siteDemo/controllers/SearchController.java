@@ -72,6 +72,14 @@ public class SearchController extends BaseController {
 					md.getStatusMap().get(ApplicationGlobals.LANG_EN));
 			model.addAttribute("drugClasses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
 					md.getDrugClassMap().get(ApplicationGlobals.LANG_EN));
+			model.addAttribute("routes", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_FR) :
+					md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN));
+			model.addAttribute("dosages", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueFormsMap().get(ApplicationGlobals.LANG_FR) :
+					md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN));
+			model.addAttribute("schedules", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_FR) :
+					md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_EN));
+			model.addAttribute("species", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_FR) :
+					md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_EN));
 
 		} catch (Exception e) {
 			e.printStackTrace();

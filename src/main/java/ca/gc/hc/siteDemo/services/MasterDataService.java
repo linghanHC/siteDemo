@@ -190,88 +190,95 @@ public class MasterDataService {
 	 * @author Sylvain Larivière 2009-09-10
 	 * Updated 2009-10-26 to allow English and French lists
 	 */
-//	private void loadUniqueRoutes() throws Exception {
-//
-//		try {
-//			SearchDrugDao search = new SearchDrugDao();
-//			HashMap<String,List<String>> routesMap = search.retrieveUniqueRoutes();
-//
-//			if (routesMap != null) {
-//				this.populateDrugSearchCriteriaList(routesMap, uniqueRoutesMap);
-//			}
-//		}catch (Exception e) {
-//			log.error("Stack Trace: ", e);
-//			StringBuffer message = new StringBuffer("loadUniqueRoutes [");
-//			message.append("] failed");
-//			throw new Exception(message.toString());
-//		}
-//	}
+	private HashMap<String, List<LabelValueBean>> loadUniqueRoutes() throws Exception {
+
+		try {
+			HashMap<String,List<String>> routesMap = dao.retrieveUniqueRoutes();
+
+			if (routesMap != null) {
+				HashMap<String, List<LabelValueBean>> uniqueRoutesMap = new HashMap<String,List<LabelValueBean>>();
+				populateDrugSearchCriteriaList(routesMap, uniqueRoutesMap);
+				return uniqueRoutesMap;
+			}
+		}catch (Exception e) {
+			log.error("Stack Trace: ", e);
+			StringBuffer message = new StringBuffer("loadUniqueRoutes [");
+			message.append("] failed");
+			throw new Exception(message.toString());
+		}
+		return null;
+	}
 
 	/**
 	 * Populates distinct pharmaceutical forms for use in combo box. 
 	 * @author Sylvain Larivière 2009-09-10
 	 * Updated 2009-10-26 to allow English and French lists
 	 */
-//	private void loadUniquePharmaceuticalForms() throws Exception {
-//
-//		try {
-//			SearchDrugDao search = new SearchDrugDao();
-//			HashMap<String,List<String>> formsMap = search.retrieveUniqueForms();
-//			if (formsMap != null) {
-//				this.populateDrugSearchCriteriaList(formsMap, uniqueFormsMap);
-//			}
-//
-//		} catch (Exception e) {
-//			log.error("Stack Trace: ", e);
-//			StringBuffer message = new StringBuffer("loadUniquePharmaceuticalForms [");
-//			message.append("] failed");
-//			throw new Exception(message.toString());
-//		}
-//	}
-//
+	private HashMap<String, List<LabelValueBean>> loadUniquePharmaceuticalForms() throws Exception {
+
+		try {
+			HashMap<String,List<String>> formsMap = dao.retrieveUniqueForms();
+			if (formsMap != null) {
+				HashMap<String, List<LabelValueBean>> uniqueFormsMap = new HashMap<String,List<LabelValueBean>>();
+				populateDrugSearchCriteriaList(formsMap, uniqueFormsMap);
+				return uniqueFormsMap;
+			}
+
+		} catch (Exception e) {
+			log.error("Stack Trace: ", e);
+			StringBuffer message = new StringBuffer("loadUniquePharmaceuticalForms [");
+			message.append("] failed");
+			throw new Exception(message.toString());
+		}
+		return null;
+	}
+
 	/**
 	 * Populates distinct schedules for use in combo box. 
 	 * @author Sylvain Larivière 2009-09-10
 	 * Updated 2009-10-26 to allow English and French lists
 	 */
-//	private void loadUniqueSchedules() throws Exception {
-//
-//		try {
-//			SearchDrugDao search = new SearchDrugDao();
-//			HashMap<String,List<String>> schedulesMap = search.retrieveUniqueSchedules();
-//
-//			if (schedulesMap != null) {
-//				this.populateDrugSearchCriteriaList(schedulesMap, uniqueSchedulesMap);
-//			}
-//		}catch (Exception e) {
-//			log.error("Stack Trace: ", e);
-//			StringBuffer message = new StringBuffer("loadUniqueSchedules [");
-//			message.append("] failed");
-//			throw new Exception(message.toString());
-//		}
-//	}
+	private HashMap<String, List<LabelValueBean>> loadUniqueSchedules() throws Exception {
+
+		try {
+			HashMap<String,List<String>> schedulesMap = dao.retrieveUniqueSchedules();
+
+			if (schedulesMap != null) {
+				HashMap<String, List<LabelValueBean>> uniqueSchedulesMap = new HashMap<String,List<LabelValueBean>>();
+				populateDrugSearchCriteriaList(schedulesMap, uniqueSchedulesMap);
+				return uniqueSchedulesMap;
+			}
+		}catch (Exception e) {
+			log.error("Stack Trace: ", e);
+			StringBuffer message = new StringBuffer("loadUniqueSchedules [");
+			message.append("] failed");
+			throw new Exception(message.toString());
+		}
+		return null;
+	}
 
 	/**
 	 * Populates distinct schedules for use in combo box. 
 	 * @author Sunny Lo 2017-10-01
 	 * Updated 2009-10-26 to allow English and French lists
 	 */
-//	private void loadUniqueSpecies() throws Exception {
-//
-//		try {
-//			SearchDrugDao search = new SearchDrugDao();
-//			HashMap<String,List<String>> speciesMap = search.retrieveUniqueSpecies();
-//
-//			if (speciesMap != null) {
-//				this.populateDrugSearchCriteriaList(speciesMap, uniqueSpeciesMap);
-//			}
-//		}catch (Exception e) {
-//			log.error("Stack Trace: ", e);
-//			StringBuffer message = new StringBuffer("loadUniqueSpecies [");
-//			message.append("] failed");
-//			throw new Exception(message.toString());
-//		}
-//	}
+	private HashMap<String, List<LabelValueBean>> loadUniqueSpecies() throws Exception {
+
+		try {
+			HashMap<String,List<String>> speciesMap = dao.retrieveUniqueSpecies();
+			HashMap<String, List<LabelValueBean>> uniqueSpeciesMap = new HashMap<String,List<LabelValueBean>>();
+			if (speciesMap != null) {
+				populateDrugSearchCriteriaList(speciesMap, uniqueSpeciesMap);
+				return uniqueSpeciesMap;
+			}
+		}catch (Exception e) {
+			log.error("Stack Trace: ", e);
+			StringBuffer message = new StringBuffer("loadUniqueSpecies [");
+			message.append("] failed");
+			throw new Exception(message.toString());
+		}
+		return null;
+	}
 // todo move to ScreenDetailBusinessService  or a util class?
 //	public String getSelectAllLabel() {
 //		String selectAllLabel = "";
@@ -295,20 +302,20 @@ public class MasterDataService {
 	}
 	
 	
-	private void populateDrugSearchCriteriaList(HashMap mapList, HashMap uniqueMap) 
+	private void populateDrugSearchCriteriaList(HashMap mapList, HashMap uniqueMap)
 		throws Exception {
-		
+
 		try {
 			uniqueMap.clear();
-			// TODO
-//			if(mapList.containsKey(ApplicationGlobals.ApplicationGlobals.LANG_FR)) {
-//				generateUniqueMapforLanguage(ApplicationGlobals.ApplicationGlobals.LANG_FR, mapList, uniqueMap);
-//
-//			}
-//			if(mapList.containsKey(LANG_FR)) {
-//				generateUniqueMapforLanguage(LANG_FR, mapList, uniqueMap);
-//
-//			}
+
+			if(mapList.containsKey(ApplicationGlobals.LANG_EN)) {
+				generateUniqueMapforLanguage(ApplicationGlobals.LANG_EN, mapList, uniqueMap);
+
+			}
+			if(mapList.containsKey(ApplicationGlobals.LANG_FR)) {
+				generateUniqueMapforLanguage(ApplicationGlobals.LANG_FR, mapList, uniqueMap);
+
+			}
 		} catch (Exception e) {
 			log.error("Stack Trace: ", e);
 			StringBuffer message = new StringBuffer("populateDrugSearchCriteriaList [");
@@ -317,32 +324,32 @@ public class MasterDataService {
 		}
 	}
 	
-//	private void generateUniqueMapforLanguage(String language, HashMap mapList, HashMap uniqueMap) throws Exception {
-//		ArrayList<LabelValueBean> uniqueListItems = new ArrayList<LabelValueBean>();
-//
-//         //add the "SelectAll label"
-//		uniqueListItems.add(new LabelValueBean(getSelectAllLabel(language), "0"));
-//		//populate the rest of the list
-//		ArrayList<String> itemsList = (ArrayList<String>)mapList.get(language);
-//		Iterator it = itemsList.iterator();
-//
-//		try {
-//
-//			for (String item: itemsList) {
-//				if(item != null) {
-//					String itemLabel=item.replace("/Hc","/HC");
-//					uniqueListItems.add(new LabelValueBean(itemLabel, item));
-//				}
-//
-//			}
-//			uniqueMap.put(language, uniqueListItems);
-//		} catch (Exception e) {
-//			StringBuffer message = new StringBuffer("generateUniqueMapforLanguage [");
-//			message.append(language);
-//			message.append("] failed");
-//			throw new Exception(message.toString());
-//		}
-//	}
+	private void generateUniqueMapforLanguage(String language, HashMap mapList, HashMap uniqueMap) throws Exception {
+		ArrayList<LabelValueBean> uniqueListItems = new ArrayList<LabelValueBean>();
+
+         //add the "SelectAll label"
+		uniqueListItems.add(new LabelValueBean(getSelectAllLabel(language), "0"));
+		//populate the rest of the list
+		ArrayList<String> itemsList = (ArrayList<String>)mapList.get(language);
+		Iterator it = itemsList.iterator();
+
+		try {
+
+			for (String item: itemsList) {
+				if(item != null) {
+					String itemLabel=item.replace("/Hc","/HC");
+					uniqueListItems.add(new LabelValueBean(itemLabel, item));
+				}
+
+			}
+			uniqueMap.put(language, uniqueListItems);
+		} catch (Exception e) {
+			StringBuffer message = new StringBuffer("generateUniqueMapforLanguage [");
+			message.append(language);
+			message.append("] failed");
+			throw new Exception(message.toString());
+		}
+	}
 	
 	/**
 	 * Populates distinct statuses for use in combo box.
@@ -405,13 +412,13 @@ public class MasterDataService {
 //		statusMap.clear();
 		md.setStatusMap(loadUniqueStatuses());
 //		uniqueRoutesMap.clear();
-//		loadUniqueRoutes();
+		md.setUniqueRoutesMap(loadUniqueRoutes());
 //		uniqueFormsMap.clear();
-//		loadUniquePharmaceuticalForms();
+		md.setUniqueFormsMap(loadUniquePharmaceuticalForms());
 //		uniqueSchedulesMap.clear();
-//		loadUniqueSchedules();
+		md.setUniqueSchedulesMap(loadUniqueSchedules());
 //		uniqueSpeciesMap.clear();
-//		loadUniqueSpecies();
+		md.setUniqueSpeciesMap(loadUniqueSpecies());
 //		drugClassMap.clear();
 		md.setDrugClassMap(loadUniqueDrugClasses());
 		return md;
