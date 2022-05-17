@@ -26,7 +26,7 @@ public class ProductMonograph  extends LocaleDependantObject implements Serializ
 	private String pmEnglishFName = "";
 	private String pmFrenchFName = "";
 
-
+	private String pmName = "";
 	
 	/**
 	 * @return
@@ -95,12 +95,13 @@ public class ProductMonograph  extends LocaleDependantObject implements Serializ
 	public String getPmName() {
 		if (isLanguageFrench()) {
 			if ((getPmFrenchFName() != null) && (!getPmFrenchFName().isEmpty())){
-				return getPmFrenchFName() + ".PDF";
-			} else return "";
+				pmName = getPmFrenchFName() + ".PDF";
+			}
 		}
 		if ((getPmEnglishFName() != null) && (!getPmEnglishFName().isEmpty())){	
-			return getPmEnglishFName() + ".PDF";
-		} else return "";
+			pmName = getPmEnglishFName() + ".PDF";
+		}
+		return pmName;
 	}
 
 

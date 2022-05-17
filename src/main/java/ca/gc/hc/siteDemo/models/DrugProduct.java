@@ -47,7 +47,9 @@ public class DrugProduct extends LocaleDependantObject implements Serializable {
 	private boolean isScheduleCDinIssued;
 	
 	private String opioidManPlan;
-	
+
+	private String descriptor;
+
 	/** full constructor */
 	public DrugProduct(
 			String brandNameE,
@@ -168,7 +170,11 @@ public class DrugProduct extends LocaleDependantObject implements Serializable {
 	}
 
 	public String getDescriptor() {
-		return isLanguageFrench() ? StringsUtil.substituteIfNull(descriptorF, descriptorE) : descriptorE;
+		return descriptor;
+	}
+
+	public void setDescriptor(){
+		this.descriptor = isLanguageFrench() ? StringsUtil.substituteIfNull(descriptorF, descriptorE) : descriptorE;
 	}
 
 	public void setDescriptorE(String descriptor) {
