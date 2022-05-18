@@ -2,11 +2,11 @@ package ca.gc.hc.siteDemo.controllers;
 
 import ca.gc.hc.siteDemo.bean.*;
 import ca.gc.hc.siteDemo.constants.Constants;
-import ca.gc.hc.siteDemo.forms.InputFieldsForm;
 import ca.gc.hc.siteDemo.forms.SearchForm;
 import ca.gc.hc.siteDemo.services.JsonBusinessService;
 import ca.gc.hc.siteDemo.services.MasterDataService;
 import ca.gc.hc.siteDemo.services.SearchDrugService;
+import ca.gc.hc.siteDemo.util.AppUtils;
 import ca.gc.hc.siteDemo.util.ApplicationGlobals;
 import ca.gc.hc.siteDemo.util.StringsUtil;
 import org.slf4j.Logger;
@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -24,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,7 +41,15 @@ public class SearchController extends BaseController {
 
 	@Autowired
 	private JsonBusinessService jsonBusinessService;
-
+	
+	@Autowired
+	private AppUtils appUtils;
+	
+//	@RequestMapping("test")
+//	public String displaytest(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
+//						  Locale locale) {
+//		return "test";
+//	}
 
 	@RequestMapping(Constants.SEARCH_URL_MAPPING)
 	public String display(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
@@ -68,17 +76,17 @@ public class SearchController extends BaseController {
 			} else {
 				md = (MasterData) session.getAttribute("masterData");
 			}
-			model.addAttribute("statuses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
+			model.addAttribute("statuses", appUtils.isLanguageFrench(locale) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
 					md.getStatusMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("drugClasses", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
+			model.addAttribute("drugClasses", appUtils.isLanguageFrench(locale) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
 					md.getDrugClassMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("routes", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_FR) :
+			model.addAttribute("routes", appUtils.isLanguageFrench(locale) ? md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_FR) :
 					md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("dosages", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueFormsMap().get(ApplicationGlobals.LANG_FR) :
+			model.addAttribute("dosages", appUtils.isLanguageFrench(locale) ? md.getUniqueFormsMap().get(ApplicationGlobals.LANG_FR) :
 					md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("schedules", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_FR) :
+			model.addAttribute("schedules", appUtils.isLanguageFrench(locale) ? md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_FR) :
 					md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("species", locale.getLanguage().equals(ApplicationGlobals.LANG_FR) ? md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_FR) :
+			model.addAttribute("species", appUtils.isLanguageFrench(locale) ? md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_FR) :
 					md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_EN));
 
 		} catch (Exception e) {
@@ -102,8 +110,7 @@ public class SearchController extends BaseController {
 //		}
 //			}
 //		}
-		log.debug("==doSearch");
-		log.debug(searchForm.getDin());
+		log.debug("==doSearch "+searchForm.toString());
 
 		request.getSession().setAttribute("searchForm", searchForm);
 		// copied from SearchAction.execute()
@@ -168,7 +175,7 @@ public class SearchController extends BaseController {
 //					session.setAttribute(ApplicationGlobals.AJAX_BEAN, ajaxBean);
 //
 //				} else {
-//					// Not an Ajax request: process for normal JSP
+					// Not an Ajax request: process for normal JSP
 
 					criteria = new SearchCriteriaBean();
 
@@ -189,8 +196,7 @@ public class SearchController extends BaseController {
 					 */
 					if ((StringsUtil.hasData(searchForm.getAtc()) || (StringsUtil
 							.hasData(searchForm.getDin())))) {
-//			criteria.setDin("02231008");    // TODO remove it, for test purpose only
-			list = searchService.processSearchByAtcOrDin(request, criteria);
+						list = searchService.processSearchByAtcOrDin(request, criteria);
 //						/*
 //						 * SL/2012-09-04: If searching by DIN or ATC: remove
 //						 * default status value since this product may be
@@ -200,15 +206,7 @@ public class SearchController extends BaseController {
 //						 */
 //						//thisForm.setStatus(null);
 					} else {
-//						criteria.setCompanyName("EFAMOL RESEARCH INC."); // TODO remove it, for test purpose only
-//						criteria.setBrandName("EVENING PRIMROSE OIL");
-//				criteria.setDosage(new String[]{"0"});
-//				criteria.setDrugClass(new String[]{"0"});
-//				criteria.setRoute(new String[]{"0"});
-//				criteria.setSchedule(new String[]{"0"});
-//				criteria.setStatus(new String[]{"0"});
-//				criteria.setVetSpecies(new String[]{"0"});
-						list = searchService.processSearchByNames(request, criteria);
+						list = searchService.processSearchByNames(request, criteria, locale);
 					}
 
 			log.debug("Total match found: [" + list.size() + "].");
@@ -229,6 +227,7 @@ public class SearchController extends BaseController {
 			} else if (list.size() > 1) {
 //						session.setAttribute(
 //								ApplicationGlobals.SEARCH_RESULT_KEY, list);
+				redirectAttributes.addFlashAttribute(ApplicationGlobals.SEARCH_RESULT_KEY, list);
 			}
 
 //				}
@@ -277,17 +276,14 @@ public class SearchController extends BaseController {
 	@RequestMapping(Constants.SEARCH_RESULTS_URL_MAPPING)
 	public String displaySearchResult(Model model, Locale locale, HttpServletRequest request) throws Exception {
 		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
-		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
+//		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
 
 		log.debug("==displaySearchResult");
 		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
 			log.debug("drug bean is not in the redirect flash attribute");
-		} else {
-			// todo it is a list of object or no match found message
-			DrugBean bean = (DrugBean) model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT);
-			log.debug(bean.toString());
+			// todo redirect to ?
 		}
-
+		// todo it is a list of object or no match found message
 		return Constants.SEARCH_RESULTS_URL_MAPPING;
 	}
 
@@ -308,6 +304,66 @@ public class SearchController extends BaseController {
 		return Constants.PRODUCT_INFO_URL_MAPPING;
 	}
 
+	@RequestMapping(Constants.INFO_URL_MAPPING+"{code}")
+	public String searchByDrugCode(Model model, HttpServletRequest request, Locale locale, @PathVariable Long code) throws Exception {
+		log.debug("==searchByDrugCode code="+code);
+
+//		ActionForward forward = new ActionForward();
+//		ActionMessages errors = new ActionMessages();
+//		HttpSession session = request.getSession();
+//
+//		initializeUserLocale(request, session);
+//
+//		if (session.getAttribute("sessionActive") == null) {
+//			// There is no session here... create one
+//			session = request.getSession(true);
+//			session.setAttribute("sessionActive", "Yes");
+//
+//			// Run startup action
+//			initializeGocTemplate(request, session);
+//			initializeDataTableServerProcessing(request);
+//		}
+//
+//		session.removeAttribute(ApplicationGlobals.SELECTED_PRODUCT);
+//		session.removeAttribute("product_label");
+//		session.removeAttribute("approvedLabel");
+//		session.removeAttribute("marketedLabel");
+//
+		try {
+			SearchCriteriaBean criteria = new SearchCriteriaBean();
+//			criteria.setDrugCode(new Long((String)request.getParameter("code")));
+			criteria.setDrugCode(code);
+//			SearchDrugDao search = new SearchDrugDao();
+			List list = searchService.processSearchByAtcOrDin(request, criteria);
+//
+//			log.debug("Search by Drug Code: [" + criteria.getDrugCode()	+ "]");
+//
+			if (list.size() == 0) {
+//				log.error("Null Response bean returned.");
+//				errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("error.failure.search"));
+			} else if (list.size() != 1) {
+//				log.error("More than one product bean returned..");
+//				errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("error.failure.search"));
+			} else {
+				log.debug("Total match found: [" + list.size() + "].");
+				DrugBean bean = (DrugBean) list.get(0);
+//				session.setAttribute(ApplicationGlobals.SELECTED_PRODUCT, ActionUtil.postProcessDrugBean(bean, request));
+				model.addAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
+			}
+		} catch (Exception e) {
+//			errors.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("error.failure.system"));
+		}
+//
+//		// Report any errors we have discovered back to the original form
+//		if (!errors.isEmpty()) {
+//			saveMessages(request, errors);
+//			forward = mapping.getInputForward();
+//		} else {
+//			forward = mapping.findForward("success");
+//		}
+
+		return Constants.PRODUCT_INFO_URL_MAPPING;
+	}
 
 	//TODO: from SearchCriteriaBean
 	private String getSelectedStatusText(String[] status, Locale locale, List<LabelValueBean> statusList) throws Exception{

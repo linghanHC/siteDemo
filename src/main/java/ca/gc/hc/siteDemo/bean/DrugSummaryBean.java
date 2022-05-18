@@ -79,29 +79,29 @@ public class DrugSummaryBean extends BaseBean implements Serializable
 		this.isScheduleCDinIssued = isScheduleCDinIssued;
 	}
 
-	public String getBrandName() {
-		return drug.getBrandName();
-	}
+//	public String getBrandName() {
+//		return drug.getBrandName();
+//	}
 	
-	public String getBrandNameLangOfPart() {
-		return super.getLanguageOfPart(drug.getBrandNameE(), drug.getBrandNameF());
-	}
+//	public String getBrandNameLangOfPart() {
+//		return super.getLanguageOfPart(drug.getBrandNameE(), drug.getBrandNameF());
+//	}
 	
-	public String getDrugClass() {
-		 return drug.getDrugClass();
-	}
+//	public String getDrugClass() {
+//		 return drug.getDrugClass();
+//	}
 	
-	public String getClassLangOfPart() {
-		return super.getLanguageOfPart(drug.getDrugClassE(), drug.getDrugClassF());
-	}
+//	public String getClassLangOfPart() {
+//		return super.getLanguageOfPart(drug.getDrugClassE(), drug.getDrugClassF());
+//	}
 
-	public Long getNumberOfAis()
-	{
-		if (this.drug.getNumberOfAis() == null) {
-			return (long) 0;
-		}
-		return this.drug.getNumberOfAis();
-	}
+//	public Long getNumberOfAis()
+//	{
+//		if (this.drug.getNumberOfAis() == null) {
+//			return (long) 0;
+//		}
+//		return this.drug.getNumberOfAis();
+//	}
 
 	/**
 	 * @param string
@@ -155,10 +155,10 @@ public class DrugSummaryBean extends BaseBean implements Serializable
 	/**
 	 * @return
 	 */
-	public Long getDrugCode()
-	{
-		return this.drug.getDrugCode();
-	}
+//	public Long getDrugCode()
+//	{
+//		return this.drug.getDrugCode();
+//	}
 
 	/**
 	 * @param string
@@ -186,9 +186,12 @@ public class DrugSummaryBean extends BaseBean implements Serializable
 	/**
 	 * @return
 	 */
-	public String getStatus()
-	{
-		return status.getStatus();
+//	public String getStatus()
+//	{
+//		return status.getStatus();
+//	}
+	public DrugStatus getStatus() {
+		return status;
 	}
 
 	/**
@@ -203,30 +206,31 @@ public class DrugSummaryBean extends BaseBean implements Serializable
 	 * @return Well formated object content
 	 */
 	public String toString()
-	{
+	{ // todo
 		return new ToStringBuilder(this)
-		.append("drugCode", getDrugCode())
-		.append("din", getDin())
+//		.append("drugCode", getDrugCode())
+//		.append("din", getDin())
 		.append("companyName", getCompanyName())
-		.append("brandName", getBrandName())
-		.append("numberOfAis", getNumberOfAis())
-		.append("drugClass", getDrugClass())
+//		.append("brandName", getBrandName())
+//		.append("numberOfAis", getNumberOfAis())
+//		.append("drugClass", getDrugClass())
 		.append("status", getStatus())
 		.append("route", getRoute())
 		.append("form",getDosage())
-		.append("schedule", getSchedule())
+//		.append("schedule", getSchedule())
 		.append("vetSpecies", getVetSpecies())
 		.toString();
 
 	}
 
-
-
-
-	public String getDin() {
-		this.drug.setScheduleCDinIssued(isScheduleCDinIssued);
-		return this.drug.getDrugIdentificationNumber();
+	public boolean isScheduleCDinIssued() {
+		return isScheduleCDinIssued;
 	}
+
+//	public String getDin() {
+//		this.drug.setScheduleCDinIssued(isScheduleCDinIssued);
+//		return this.drug.getDrugIdentificationNumber();
+//	}
 
 	/***************************************************************************
 	 * Gets the name of the product monograph in the language appropriate for the Locale.
@@ -287,13 +291,18 @@ public class DrugSummaryBean extends BaseBean implements Serializable
 	public void setRoute(Route route) {
 		this.route = route;
 	}
-	public String getSchedule() {
-		return schedule.getSchedule();
+
+	public Schedule getSchedule() {
+		return schedule;
 	}
+
+	//	public String getSchedule() {
+//		return schedule.getSchedule();
+//	}
 	
-	public String getScheduleLangOfPart() {
-		return super.getLanguageOfPart(schedule.getScheduleE(), schedule.getScheduleF());
-	}
+//	public String getScheduleLangOfPart() {
+//		return super.getLanguageOfPart(schedule.getScheduleE(), schedule.getScheduleF());
+//	}
 	
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
@@ -311,13 +320,13 @@ public class DrugSummaryBean extends BaseBean implements Serializable
 		return companyName;
 	}
 	
-	public String getFirstAIName() {
-		return this.firstAI.getFirstAIName();
-	}
-	
-	public String getFirstAILangOfPart() {
-		return super.getLanguageOfPart(firstAI.getIngredientE(), firstAI.getIngredientF());
-	}
+//	public String getFirstAIName() {
+//		return this.firstAI.getFirstAIName();
+//	}
+//
+//	public String getFirstAILangOfPart() {
+//		return super.getLanguageOfPart(firstAI.getIngredientE(), firstAI.getIngredientF());
+//	}
 
 	public String getAiStrengthAndDosageText(){		
 		return this.firstAI.getAiStrengthAndDosageText();

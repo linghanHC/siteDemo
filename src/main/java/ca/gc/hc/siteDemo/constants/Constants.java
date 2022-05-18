@@ -89,4 +89,8 @@ public class Constants {
 
 	public static final String PRODUCT_INFO_VIEW = "product_info";
 	public static final String PRODUCT_INFO_URL_MAPPING = ROOT_URL_MAPPING + PRODUCT_INFO_VIEW;
+
+	public static final String INFO = "info";
+	public static final String INFO_URL_MAPPING = ROOT_URL_MAPPING + INFO;
+
 }

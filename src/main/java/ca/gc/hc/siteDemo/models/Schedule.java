@@ -73,9 +73,9 @@ public class Schedule extends LocaleDependantObject implements Serializable
 		this.drugCode = drugCode;
 	}
 
-	public String getSchedule() {
-		return isLanguageFrench() ? StringsUtil.substituteIfNull(scheduleF, scheduleE) : scheduleE;
-	}
+//	public String getSchedule() {
+//		return isLanguageFrench() ? StringsUtil.substituteIfNull(scheduleF, scheduleE) : scheduleE;
+//	}
 	
 	public String toString()
 	{

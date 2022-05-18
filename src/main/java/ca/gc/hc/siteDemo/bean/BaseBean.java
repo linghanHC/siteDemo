@@ -20,7 +20,7 @@ public abstract class BaseBean extends LocaleDependantObject {
 	 * either parameter is null, or an empty String if neither parameter is null 
 	 */
 	private static Logger log = LoggerFactory.getLogger(BaseBean.class);
-	
+	// todo to delete, moved to ApplicationUtils
 	public String getLanguageOfPart(String englishProperty, String frenchProperty) {
 		String result = "";
 		

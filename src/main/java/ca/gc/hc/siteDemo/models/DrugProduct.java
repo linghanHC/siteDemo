@@ -101,12 +101,12 @@ public class DrugProduct extends LocaleDependantObject implements Serializable {
 		this.drugCode = drugCode;
 	}
 
-	public String getBrandName() {
-		return isLanguageFrench() ? 
-				StringsUtil.substituteIfNull(brandNameF, brandNameE)
-			   :StringsUtil.substituteIfNull(brandNameE, brandNameF);
-	}
-	
+//	public String getBrandName() {
+//		return isLanguageFrench() ?
+//				StringsUtil.substituteIfNull(brandNameF, brandNameE)
+//			   :StringsUtil.substituteIfNull(brandNameE, brandNameF);
+//	}
+
 	public String getBrandNameE() {
 		return brandNameE;
 	}
@@ -123,15 +123,19 @@ public class DrugProduct extends LocaleDependantObject implements Serializable {
 		this.brandNameF = brandName;
 	}
 
+//	public String getDrugIdentificationNumber() {
+//		// Implementation for June 13, 2018
+//		// 2020: Class check is no longer needed, because Biosimilar drug is not Radiopharmaceutical drug
+//		//if (classCode.equals(ApplicationGlobals.RADIOPHARMACEUTICAL_CLASS_CODE))
+//
+//		if (!isScheduleCDinIssued) {
+//			return super.isLanguageFrench() ? ApplicationGlobals.NOT_APPLICABLE_F : ApplicationGlobals.NOT_APPLICABLE_E;
+//		}
+//	    return this.drugIdentificationNumber;
+//	}
+
 	public String getDrugIdentificationNumber() {
-		// Implementation for June 13, 2018
-		// 2020: Class check is no longer needed, because Biosimilar drug is not Radiopharmaceutical drug
-		//if (classCode.equals(ApplicationGlobals.RADIOPHARMACEUTICAL_CLASS_CODE))
-		
-		if (!isScheduleCDinIssued) {
-			return super.isLanguageFrench() ? ApplicationGlobals.NOT_APPLICABLE_F : ApplicationGlobals.NOT_APPLICABLE_E;
-		}		
-	    return this.drugIdentificationNumber;
+		return drugIdentificationNumber;
 	}
 
 	public void setDrugIdentificationNumber(
@@ -145,10 +149,6 @@ public class DrugProduct extends LocaleDependantObject implements Serializable {
 
 	public void setCompanyCode(Long companyCode) {
 		this.companyCode = companyCode;
-	}
-
-	public String getDrugClass() {
-		return isLanguageFrench() ? StringsUtil.substituteIfNull(drugClassF, drugClassE) : drugClassE;
 	}
 
 	public Long getNumberOfAis() {

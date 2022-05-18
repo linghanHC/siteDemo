@@ -70,11 +70,11 @@ public class DrugStatus extends LocaleDependantObject  implements Serializable
 		this.drugCode = drugCode;
 	}
 
-	public String getStatus() {
-		return isLanguageFrench() ? StringsUtil.substituteIfNull(externalStatus
-				.getExternalStatusF(), externalStatus.getExternalStatusE())
-				: externalStatus.getExternalStatusE();
-	}
+//	public String getStatus() {
+//		return isLanguageFrench() ? StringsUtil.substituteIfNull(externalStatus
+//				.getExternalStatusF(), externalStatus.getExternalStatusE())
+//				: externalStatus.getExternalStatusE();
+//	}
 
 	public java.util.Date getHistoryDate()
 	{

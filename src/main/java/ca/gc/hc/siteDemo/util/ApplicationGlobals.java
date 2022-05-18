@@ -73,7 +73,7 @@ public final class ApplicationGlobals {
 	 * The name of the object in the HttpSession holding the search result object
 	 * and search criteria object.
 	 */
-	static public final String SEARCH_RESULT_KEY = "dpd.search.results";
+	static public final String SEARCH_RESULT_KEY = "dpdSearchResults";
 	static public final String USER_SEARCH_CRITERIA = "dpd.search.criteria"; // as typed by user: used in GUI
 	static public final String LAST_SEARCH_CRITERIA = "dpd.last.search.criteria"; // last full search criteria to patch back button issue
 	static public final String SELECTED_PRODUCT = "dpdSelectedProduct";

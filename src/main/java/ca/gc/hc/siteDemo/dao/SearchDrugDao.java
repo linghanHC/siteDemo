@@ -80,7 +80,7 @@ public class SearchDrugDao  {
 		
 	private final static String DRUG_CLASS_COLUMN = "class_code";
 
-	
+	// todo move ajaxbean to service layer
 	private boolean isAjaxRequest = false;
 	private AjaxBean ajaxBean = null;
 	private List<String> listOfIngredents = new ArrayList<>(); 
@@ -302,7 +302,8 @@ public class SearchDrugDao  {
 		
 		return basicDrugSummary;
 	}
-	
+	@Deprecated
+	// todo moved to service layer, refactor all callers
 	private List<BasicDrugSummaryBean> populateBasicDrugSummaries(ResultSet rs, AjaxBean ajaxBean) throws Exception {
 		List<BasicDrugSummaryBean> basicDrugSummaries = new ArrayList<BasicDrugSummaryBean>();
 		try {

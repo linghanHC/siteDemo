@@ -7,7 +7,6 @@ import ca.gc.hc.siteDemo.bean.AjaxBean;
 import ca.gc.hc.siteDemo.bean.DrugSummaryBean;
 import ca.gc.hc.siteDemo.bean.JsonSummaryBean;
 
-import ca.gc.hc.siteDemo.controllers.SearchController;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,20 +44,20 @@ public class JsonBuilder extends LocaleDependantObject {
 	public JsonSummaryBean toJsonSummary(DrugSummaryBean jspBean)
 			throws Exception {
 		JsonSummaryBean jsonBean = new JsonSummaryBean();
-
+//todo
 		if (hasValidColumnCount(jsonBean, ajaxBean.getColumnCount())) {
-			jsonBean.setStatus(jspBean.getStatus());
+//			jsonBean.setStatus(jspBean.getStatus());
 			jsonBean.setDin(generateDinUrl(jspBean));
 			jsonBean.setCompany(jspBean.getCompanyName());
-			jsonBean.setBrand(jspBean.getBrandName());
-			jsonBean.setDrugClass(jspBean.getDrugClass());
+//			jsonBean.setBrand(jspBean.getBrandName());
+//			jsonBean.setDrugClass(jspBean.getDrugClass());
 			jsonBean.setAIStrength(jspBean.getAiStrengthAndDosageText());
-			jsonBean.setMajorAI(jspBean.getFirstAIName());
-			jsonBean.setAiNum(jspBean.getNumberOfAis().toString());
+//			jsonBean.setMajorAI(jspBean.getFirstAIName());
+//			jsonBean.setAiNum(jspBean.getNumberOfAis().toString());
 			String hasPm = StringsUtil.hasData(jspBean.getPm()) ? localisedProperty(
 					"Yes", "Oui") : localisedProperty("No", "Non");
 			jsonBean.setPm(hasPm);
-			jsonBean.setSchedule(jspBean.getSchedule());
+//			jsonBean.setSchedule(jspBean.getSchedule());
 		} else {
 			String message = "The source and destination beans have a different number of declared fields. Conversion failed.";
 			Exception e = new Exception(message);
@@ -68,19 +67,19 @@ public class JsonBuilder extends LocaleDependantObject {
 
 		return jsonBean;
 	}
-
+// todo
 	private String generateDinUrl(DrugSummaryBean jspBean) {
-		String drugCode = Long.toString(jspBean.getDrugCode());
+//		String drugCode = Long.toString(jspBean.getDrugCode());
 		String lang = "en"; //todo ApplicationGlobals.getUserLanguage();
 
 		// ex: <a href="/dpd-bdpp/info.do?code=81548&amp;lang=en">01234567</a>
 		StringBuilder sb = new StringBuilder(
 				"<a href=\"/dpd-bdpp/info.do?code=");
-		sb.append(drugCode);
+//		sb.append(drugCode);
 		sb.append("&amp;lang=");
 		sb.append("en"); // todo ApplicationGlobals.instance().getUserLanguage()
 		sb.append("\">");
-		sb.append(jspBean.getDin());
+//		sb.append(jspBean.getDin());
 		sb.append("</a>");
 
 		return sb.toString();

@@ -157,9 +157,9 @@ public void setStrengthUnitF(String strengthUnitF) {
     this.dosageUnitE = dosageUnitE;
   }
 
-  public String getFirstAIName() {
-    return isLanguageFrench() ? StringsUtil.substituteIfNull(ingredientF, ingredientE) : ingredientE;
-	}
+//  public String getFirstAIName() {
+//    return isLanguageFrench() ? StringsUtil.substituteIfNull(ingredientF, ingredientE) : ingredientE;
+//	}
 
 	/**
 	 * Sylvain Larivière  2009-12-07
