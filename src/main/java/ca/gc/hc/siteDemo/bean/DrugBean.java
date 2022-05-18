@@ -72,6 +72,12 @@ public class DrugBean extends BaseBean implements Serializable
 	private List<SpecialIdentifier> specialIdentifiers = new ArrayList<SpecialIdentifier>();
 	
 	private String biosimDrug;
+
+	private String statusLangOfPart;
+
+	private boolean isRadioPharmaceutical;
+
+	private boolean isApproved;
 		
 	public List<ActiveIngredients> getActiveIngredientList()
 	{
@@ -381,7 +387,8 @@ public class DrugBean extends BaseBean implements Serializable
 	}
 	
 	public String getStatusLangOfPart() {
-		return super.getLanguageOfPart(statusVO.getStatusE(), statusVO.getStatusF());
+		statusLangOfPart = super.getLanguageOfPart(statusVO.getStatusE(), statusVO.getStatusF());
+		return statusLangOfPart;
 	}
 	
 	public String getStreetNameLangOfPart() {
@@ -484,11 +491,13 @@ public class DrugBean extends BaseBean implements Serializable
 	}
 	
 	public boolean getIsRadioPharmaceutical() {
-		return this.drugProduct.getClassCode().equals(ApplicationGlobals.RADIOPHARMACEUTICAL_CLASS_CODE);
+		isRadioPharmaceutical = this.drugProduct.getClassCode().equals(ApplicationGlobals.RADIOPHARMACEUTICAL_CLASS_CODE);
+		return isRadioPharmaceutical;
 	}
 	
 	public boolean getIsApproved() {
-		return this.statusVO.getExternalStatus().getExternalStatusId().equals(ApplicationGlobals.APPROVED_STATUS_CODE);
+		isApproved = this.statusVO.getExternalStatus().getExternalStatusId().equals(ApplicationGlobals.APPROVED_STATUS_CODE);
+		return isApproved;
 	}
 	
 	public boolean getDisplayFootnoteTwo(){
