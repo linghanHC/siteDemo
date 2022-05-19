@@ -40,6 +40,8 @@ public class SearchDrugService {
 	@Autowired
 	private JsonBusinessService jsonBusinessService;
 	@Autowired
+	private ScreenDetailBusinessService screenDetailBusinessService;
+	@Autowired
 	private LocalTestDataBusinessService localTestDataBusinessService;
 	@Autowired
 	private AppUtils appUtils;
@@ -132,7 +134,7 @@ public class SearchDrugService {
 
 		boolean isFrench = appUtils.isLanguageFrench(locale);
 		List<DrugSummary> newlist =
-				(List<DrugSummary>) resultsList.stream().map(p -> converter(p, isFrench)).collect(Collectors.toList());
+				(List<DrugSummary>) resultsList.stream().map(p -> converter(p, isFrench, locale)).collect(Collectors.toList());
 
 		//  DrugSummaryBean => DrugSummary
 
@@ -147,7 +149,7 @@ public class SearchDrugService {
 //		return u;
 //	}
 
-	private DrugSummary converter(Object old, boolean isFrench) {
+	private DrugSummary converter(Object old, boolean isFrench, Locale locale) {
 		DrugSummary drugSummary = new DrugSummary();
 		if (old instanceof DrugSummaryBean) {
 			DrugSummaryBean bean = (DrugSummaryBean) old;
@@ -159,13 +161,31 @@ public class SearchDrugService {
 			drugSummary.setBrandLangOfPart(getBrandNameLangOfPart(bean.getDrug(), isFrench));
 			drugSummary.setDrugClass(getDrugClass(bean.getDrug(), isFrench));
 			drugSummary.setClassLangOfPart(getClassLangOfPart(bean.getDrug(), isFrench));
+			drugSummary.setPm(getPm(bean, isFrench, locale));
 			drugSummary.setSchedule(getSchedule(bean.getSchedule(), isFrench));
 			drugSummary.setScheduleLangOfPart(getScheduleLangOfPart(bean.getSchedule(), isFrench));
 			drugSummary.setNumberOfAis(getNumberOfAis(bean.getDrug()));
 			drugSummary.setFirstAIName(getFirstAIName(bean.getfirstAI(), isFrench));
 			drugSummary.setFirstAILangOfPart(getFirstAILangOfPart(bean.getfirstAI(), isFrench));
+			drugSummary.setAiStrengthAndDosageLangOfPart(getAiStrengthAndDosageLangOfPart(bean.getfirstAI(), isFrench));
+			drugSummary.setAiStrengthAndDosageText(getAiStrengthAndDosageText(bean.getfirstAI(), isFrench));
+			drugSummary.setDosageValue(bean.getfirstAI().getDosageValue());
+			drugSummary.setAiDosageLangOfPart(getAiDosageLangOfPart(bean.getfirstAI(), isFrench));
+			drugSummary.setDosageUnit(getDosageUnit(bean.getfirstAI(), isFrench));
 		}
 		return drugSummary;
+	}
+
+
+	/***************************************************************************
+	 * Gets the name of the product monograph in the language appropriate for the Locale.
+	 * @return the locale-specific name of the product monograph.
+	 */
+	public String getPm(DrugSummaryBean bean, boolean isFrench, Locale locale) {
+		String pm = isFrench ? bean.getPmF() : bean.getPmE();
+		return StringsUtil.hasData(pm) ?
+				screenDetailBusinessService.getResourceMessage("label.results.yes", locale) :
+				screenDetailBusinessService.getResourceMessage("label.results.no", locale);
 	}
 
 	private String getStatus(DrugStatus status, boolean isFrench) {
@@ -226,6 +246,87 @@ public class SearchDrugService {
 
 	private String getFirstAILangOfPart(ActiveIngredients firstAI, boolean isFrench) {
 		return appUtils.getLanguageOfPart(firstAI.getIngredientE(), firstAI.getIngredientF(), isFrench);
+	}
+
+	/**
+	 //	 * @param index An int corresponding to an index in the current List of ActiveIngredients
+	 * @return Either an empty string if the related bilingual properties actually exist in both official
+	 * languages, or the ISO language code to use in a lang attribute where the property in the requested
+	 * language is missing, and its equivalent in the other official language is being returned instead. <br/>
+	 * <strong>Note:</strong> Normally, both languages are expected to be present. If either is missing,
+	 * the caller is responsible for getting the individual lang attribute(s) if required using
+	 * getAiStrengthLangOfPart and getAiDosageLangOfPart.
+	//	 * @see getAiStrengthLangOfPart
+	//	 * @see getAiDosageLangOfPart
+	 * @author Sylvain LariviÃ¨re  2012-09-19
+	 */
+	private String getAiStrengthAndDosageLangOfPart(ActiveIngredients firstAI, boolean isFrench) {
+		String strengthUnitLangOfPart = appUtils.getLanguageOfPart(firstAI.getStrengthUnitE(), firstAI.getStrengthUnitF(), isFrench);
+		String dosageUnitLangOfPart = appUtils.getLanguageOfPart(firstAI.getDosageUnitE(), firstAI.getDosageUnitF(), isFrench);
+
+		return strengthUnitLangOfPart + dosageUnitLangOfPart;
+	}
+
+	/**
+	 * Sylvain Larivière  2009-12-07
+	 * @return active ingredient strength in the form &lt;strength&gt; &lt;unit&gt;
+	 *  for instance " 100 MG", or ".2 %".
+	 *  Dosage (eg "per tablet" or "per ml") is delegated to getDosageText()
+	//	 *  @see getDosageText().
+	 */
+	private String getAiStrengthAndDosageText(ActiveIngredients firstAI, boolean isFrench){
+		String result = "";
+
+		result = getAiStrengthText(firstAI, isFrench);
+		if (!isDosageUnitAPercentage(firstAI, isFrench)) {
+			result += getAiDosageText(firstAI, isFrench);
+		}
+		return  result;
+	}
+
+	private String getAiStrengthText(ActiveIngredients firstAI, boolean isFrench){
+		return firstAI.getStrength() + " " + getStrengthUnit(firstAI, isFrench);
+	}
+
+	private String getStrengthUnit(ActiveIngredients firstAI, boolean isFrench){
+		return isFrench ? StringsUtil.substituteIfNull(firstAI.getStrengthUnitF(), firstAI.getStrengthUnitE()) : firstAI.getStrengthUnitE();
+	}
+	private boolean isDosageUnitAPercentage(ActiveIngredients firstAI, boolean isFrench){
+		return StringsUtil.hasData(getDosageUnit(firstAI, isFrench)) && firstAI.equals("%");
+	}
+
+	private String getDosageUnit(ActiveIngredients firstAI, boolean isFrench) {
+		return isFrench ? StringsUtil.substituteIfNull(firstAI.getDosageUnitF(), firstAI.getDosageUnitE()) : firstAI.getDosageUnitE();
+	}
+
+	private String getAiStrengthLangOfPart(ActiveIngredients firstAI, boolean isFrench) {
+		return appUtils.getLanguageOfPart(firstAI.getStrengthUnitE(), firstAI.getStrengthUnitF(), isFrench);
+	}
+
+	private String getAiDosageLangOfPart(ActiveIngredients firstAI, boolean isFrench) {
+		return appUtils.getLanguageOfPart(firstAI.getDosageUnitE(), firstAI.getDosageUnitF(), isFrench);
+	}
+
+	/**
+	 * Sylvain Larivière 2009-12-07
+	 * @return Dosage in the form " / &lt;value&gt; &lt;unit&gt; "
+	 *  for instance " / 5 ML" (per 5 ml) or " / ML" (per ml)
+	//	 * @see getAIStrengthAndDosageText()
+	 */
+	private String getAiDosageText(ActiveIngredients firstAI, boolean isFrench) {
+		String result = "";
+
+		if (StringsUtil.hasData(firstAI.getDosageValue())) {
+			if (StringsUtil.hasData(getDosageUnit(firstAI, isFrench))) {
+				result = " / " + firstAI.getDosageValue() + " " + getDosageUnit(firstAI, isFrench);
+			}
+		}else {
+			if (!isDosageUnitAPercentage(firstAI, isFrench))
+				if (StringsUtil.hasData(getDosageUnit(firstAI, isFrench))){
+					result = " / " + getDosageUnit(firstAI, isFrench);
+				}
+		}
+		return result;
 	}
 
 		private List<LabelValueBean> getUniqueDrugClasses() throws Exception {

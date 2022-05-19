@@ -52,7 +52,7 @@ public class SearchController extends BaseController {
 //	}
 
 	@RequestMapping(Constants.SEARCH_URL_MAPPING)
-	public String display(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
+	public String displaySearchPage(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
 						  Locale locale) {
 		log.debug("==display searchpage");
 		try {
@@ -211,23 +211,21 @@ public class SearchController extends BaseController {
 
 			log.debug("Total match found: [" + list.size() + "].");
 
-			if (list.size() == 0) {
+//			if (list.size() == 0) {
 //						request.getSession().setAttribute(
 //								ApplicationGlobals.RESULT_COUNT_KEY, 0);
 //						// A "No match found" message will display in the
 //						// results page
 //						return mapping.findForward("multiplematch");
 
-			} else if (list.size() == 1) {
+//			} else
+			if (list.size() == 1) {
 				DrugBean bean = (DrugBean) list.get(0);
-//						session.setAttribute(
-//								ApplicationGlobals.SELECTED_PRODUCT,
-//								ActionUtil.postProcessDrugBean(bean, request));
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
-			} else if (list.size() > 1) {
-//						session.setAttribute(
-//								ApplicationGlobals.SEARCH_RESULT_KEY, list);
+				forward = Constants.PRODUCT_INFO_URL_MAPPING;
+			} else {
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SEARCH_RESULT_KEY, list);
+				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 			}
 
 //				}
@@ -248,15 +246,15 @@ public class SearchController extends BaseController {
 			if (ajaxBean != null ){
 //			if (ajaxBean != null
 //					&& AjaxRequestStatus.ACTIVE == ajaxBean.getAjaxStatus()) {
-				forward = null;
+				forward = null;		//todo
 			} else if (list.size() > 1) {
 //				request.getSession().setAttribute(
 //						ApplicationGlobals.SEARCH_RESULT_KEY, list);
 //				forward = (mapping.findForward("multiplematch"));
-				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
+//				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 			} else if (list.size() == 1) {
 //				forward = (mapping.findForward("onematch"));
-				forward = Constants.PRODUCT_INFO_URL_MAPPING;
+//				forward = Constants.PRODUCT_INFO_URL_MAPPING;
 			} else {
 //				messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(
 //						"error.failure.system"));
@@ -279,11 +277,14 @@ public class SearchController extends BaseController {
 //		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
 
 		log.debug("==displaySearchResult");
-		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
+		if (model.asMap().get(ApplicationGlobals.SEARCH_RESULT_KEY) == null) {
 			log.debug("drug bean is not in the redirect flash attribute");
-			// todo redirect to ?
+			return redirectTo(Constants.SEARCH_VIEW);
+		} else {
+			List<DrugSummary> list = (List<DrugSummary>) model.asMap().get(ApplicationGlobals.SEARCH_RESULT_KEY);
+			log.debug(list.size()+"");
 		}
-		// todo it is a list of object or no match found message
+
 		return Constants.SEARCH_RESULTS_URL_MAPPING;
 	}
 

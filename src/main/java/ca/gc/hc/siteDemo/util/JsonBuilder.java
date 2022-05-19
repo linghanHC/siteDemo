@@ -51,12 +51,12 @@ public class JsonBuilder extends LocaleDependantObject {
 			jsonBean.setCompany(jspBean.getCompanyName());
 //			jsonBean.setBrand(jspBean.getBrandName());
 //			jsonBean.setDrugClass(jspBean.getDrugClass());
-			jsonBean.setAIStrength(jspBean.getAiStrengthAndDosageText());
+//			jsonBean.setAIStrength(jspBean.getAiStrengthAndDosageText());
 //			jsonBean.setMajorAI(jspBean.getFirstAIName());
 //			jsonBean.setAiNum(jspBean.getNumberOfAis().toString());
-			String hasPm = StringsUtil.hasData(jspBean.getPm()) ? localisedProperty(
-					"Yes", "Oui") : localisedProperty("No", "Non");
-			jsonBean.setPm(hasPm);
+//			String hasPm = StringsUtil.hasData(jspBean.getPm()) ? localisedProperty(
+//					"Yes", "Oui") : localisedProperty("No", "Non");
+//			jsonBean.setPm(hasPm);
 //			jsonBean.setSchedule(jspBean.getSchedule());
 		} else {
 			String message = "The source and destination beans have a different number of declared fields. Conversion failed.";

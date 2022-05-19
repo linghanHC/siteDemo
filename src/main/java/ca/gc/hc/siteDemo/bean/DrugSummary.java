@@ -12,14 +12,13 @@ import java.io.Serializable;
  */
 // extends BaseBean  todo?
 // todo? merge with JsonSummaryBean??
-	@Data
-	@NoArgsConstructor
-public class DrugSummary implements Serializable
-{
+@Data
+@NoArgsConstructor
+public class DrugSummary implements Serializable {
 
 	private static final long serialVersionUID = 4547574437535824683L;
 
-	private String id;
+	private String companyName;
 	private Long drugCode;
 	private String din;
 	private String status;
@@ -28,28 +27,17 @@ public class DrugSummary implements Serializable
 	private String drugClass;
 	private String classLangOfPart;
 	private Long numberOfAis;
-
 	private String firstAIName;
 	private String firstAILangOfPart;
-	private String dosage;
+	private String dosageValue;
 	private String route;
 	private String schedule;
 	private String scheduleLangOfPart;
-
-
-	//	private DrugProduct drug;
-	private String companyName;
-//	private DrugStatus status;
-	private String pm;
-//	private String pmE;
-//	private String pmF;
-//	private ActiveIngredients firstAI;	//SL/2009-10-01: the first active ingredient used (ordered by id)
+	private String pm;	// product monograph
 	private String aiStrengthAndDosageText;
 	private String aiStrengthAndDosageLangOfPart;
-	//	private Route route;
-//	private Form  dosage;
-//	private Schedule schedule;
-//	private DrugVeterinarySpecies vetSpecies;
+	private String aiDosageLangOfPart;
+	private String dosageUnit;
 	private boolean isScheduleCDinIssued;
 
 }

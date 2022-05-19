@@ -128,11 +128,6 @@ public void setStrengthUnitF(String strengthUnitF) {
     this.strength = strength;
   }
 
-  public String getStrengthUnit()
-  {
-	  return isLanguageFrench() ? StringsUtil.substituteIfNull(strengthUnitF, strengthUnitE) : strengthUnitE;
-  }
-
   public String getDosageValue()
   {
     return this.dosageValue;
@@ -148,39 +143,10 @@ public void setStrengthUnitF(String strengthUnitF) {
     return this.dosageUnitE;
   }
   
-  public String getDosageUnit() {
-	  return isLanguageFrench() ? StringsUtil.substituteIfNull(dosageUnitF, dosageUnitE) : dosageUnitE;
-  }
-  
   public void setDosageUnitE(String dosageUnitE)
   {
     this.dosageUnitE = dosageUnitE;
   }
-
-//  public String getFirstAIName() {
-//    return isLanguageFrench() ? StringsUtil.substituteIfNull(ingredientF, ingredientE) : ingredientE;
-//	}
-
-	/**
-	 * Sylvain Larivière  2009-12-07
-	 * @return active ingredient strength in the form &lt;strength&gt; &lt;unit&gt;
-	 *  for instance " 100 MG", or ".2 %".
-	 *  Dosage (eg "per tablet" or "per ml") is delegated to getDosageText()
-//	 *  @see getDosageText().
-	 */
-	public String getAiStrengthAndDosageText(){
-		String result = "";
-		
-		result = getAiStrengthText(); 
-		if (!isDosageUnitAPercentage()) {
-			result += getAiDosageText();
-		}	
-		return  result;
-	}
-	
-	public String getAiStrengthText(){
-		return this.strength + " " + this.getStrengthUnit();
-	}
 
 	public String getIngredientF() {
 		return ingredientF;
@@ -193,31 +159,4 @@ public void setStrengthUnitF(String strengthUnitF) {
 	public String getIngredientE() {
 		return ingredientE;
 	}
-	
-	/**
-	 * Sylvain Larivière 2009-12-07
-	 * @return Dosage in the form " / &lt;value&gt; &lt;unit&gt; "
-	 *  for instance " / 5 ML" (per 5 ml) or " / ML" (per ml)
-//	 * @see getAIStrengthAndDosageText()
-	 */
-	public String getAiDosageText() {
-		String result = "";
-		
-		if (StringsUtil.hasData(this.dosageValue)) {
-			if (StringsUtil.hasData(this.getDosageUnit())) {
-				result = " / " + this.dosageValue + " " + this.getDosageUnit();
-			}
-		}else {
-			if (!isDosageUnitAPercentage()) 
-				if (StringsUtil.hasData(getDosageUnit())){
-			result = " / " + this.getDosageUnit();
-			}
-		}
-		return result;
-	}
-	
-	public boolean isDosageUnitAPercentage() {
-		return StringsUtil.hasData(this.getDosageUnit()) && dosageUnitE.equals("%");
-	}
-  
 }

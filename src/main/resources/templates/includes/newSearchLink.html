@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<body>
+<th:block th:fragment="newSearchLink">
+	<div class="col-md-6">
+		<a th:href="@{/search}" th:utext="#{label.results.new.search}"/>
+	</div>
+</th:block>
+</body>
+
