@@ -221,7 +221,8 @@ public class SearchController extends BaseController {
 //			} else
 			if (list.size() == 1) {
 				DrugBean bean = (DrugBean) list.get(0);
-				redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
+				Drug drug = searchService.convertToDrug(bean, appUtils.isLanguageFrench(locale));
+				redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, drug);
 				forward = Constants.PRODUCT_INFO_URL_MAPPING;
 			} else {
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SEARCH_RESULT_KEY, list);
@@ -290,16 +291,14 @@ public class SearchController extends BaseController {
 
 	@RequestMapping(Constants.PRODUCT_INFO_URL_MAPPING)
 	public String displayProductInfo(Model model, Locale locale, HttpServletRequest request) throws Exception {
-		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
-		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
 
 		log.debug("==displayProductInfo");
 		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
 			log.debug("drug bean is not in the redirect flash attribute");
 		} else {
-			DrugBean bean = (DrugBean) model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT);
-			log.debug(bean.toString());
-			model.addAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
+			Drug drug = (Drug) model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT);
+			log.debug(drug.toString());
+			model.addAttribute(ApplicationGlobals.SELECTED_PRODUCT, drug);
 		}
 
 		return Constants.PRODUCT_INFO_URL_MAPPING;

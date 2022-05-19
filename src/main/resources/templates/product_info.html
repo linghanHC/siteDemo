@@ -38,43 +38,39 @@
 	</logic:equal>
 -->
 	<!-- if the drug class is not veterinary and the pm exist put a disclaimer and the pm link -->
-	<div th:if="${dpdSelectedProduct.pmVO != null}">
-		<div th:if="${dpdSelectedProduct.pmVO.pmName !=''}">
-			<div th:if="${dpdSelectedProduct.drugProduct.drugIdentificationNumber != '02337258'}">
-				<div th:if="${dpdSelectedPproductdrugProduct.drugIdentificationNumber !='02336650'}">
+	<div th:if="${dpdSelectedProduct.isPmAvailable}">
+		<div th:if="${dpdSelectedProduct.pmName != null}">
+			<div th:if="${dpdSelectedProduct.din != '02337258'}">
+				<div th:if="${dpdSelectedProduct.din !='02336650'}">
 					<p class="well" th:utext="#{label.pm.disclaimer}" />
 				</div>
 			</div>
 
 			<!-- added condition if DIN = 02336650 put h1n1 disclaimer - Date: Oct. 22, 2009 -->
-			<div th:if="${dpdSelectedProduct.drugProduct.drugIdentificationNumber == '02336650'}">
+			<div th:if="${dpdSelectedProduct.din == '02336650'}">
 				<div class="well" th:utext="#{label.pm.h1n1.din02336650.disclaimer}" />
 			</div>
 			<!-- added condition if DIN = 02337258 put h1n1 disclaimer - Date: Nov. 5, 2009 -->
-			<div th:if="${dpdSelectedProduct.drugProduct.drugIdentificationNumber == '02337258'}" >
+			<div th:if="${dpdSelectedProduct.din == '02337258'}" >
 				<div class="well" th:utext="#{label.pm.h1n1.din02337258.disclaimer}" />
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<p class="col-sm-4"><strong th:utext="#{label.product.current.status}"/></p>
-		<p class="col-sm-8">
-<!--			<div th:if="${dpdSelectedProduct.statusLangOfPart != null or dpdSelectedProduct.statusLangOfPart !=''}">
-				<span class="strong" xml:lang="${dpdSelectedProduct.statusLangOfPart}" lang="${dpdSelectedProduct.statusLangOfPart}" th:utext ="${dpdSelectedProduct.statusVO.status}"/></span>
-			</div>
-			<div class="strong" th:if="${dpdSelectedProduct.statusLangOfPart == null}" th:utext="${dpdSelectedProduct.statusVO.status}"/>
-			</div>-->
+		<p class="col-sm-4"><strong th:utext="#{label.product.current.status}"/>
+		<p class="col-sm-8" th:if="${dpdSelectedProduct.statusLangOfPart != ''}">
+			<span class="strong" th:xmllang="${dpdSelectedProduct.statusLangOfPart}" th:lang="${dpdSelectedProduct.statusLangOfPart}" th:utext ="${dpdSelectedProduct.status}"/>
+		</p>
+		<p class="col-sm-8" th:unless="${dpdSelectedProduct.statusLangOfPart != ''}">
+			<strong th:utext="${dpdSelectedProduct.status}" />
 		</p>
 	</div>
 	<div th:if="${not dpdSelectedProduct.isRadioPharmaceutical}">
 		<div class="row">
 			<p class="col-sm-4">
 				<strong th:utext="#{label.product.current.date}"/>
-			<p class="col-sm-8" th:utext="${#dates.format(dpdSelectedProduct.statusVO.historyDate,'yyyy-MM-dd')}" >
-				<br/>
-			</p>
-
+			<p class="col-sm-8" th:utext="${dpdSelectedProduct.historyDate}" />
 		</div>
 		<div class="row">
 			<div th:if="${not dpdSelectedProduct.isApproved}">
@@ -82,34 +78,28 @@
 					<strong th:utext:="#{label.original.market.date}"/>
 					<sup id="fn1-rf"><a class="fn-lnk" href="#fn1"><span class="wb-inv" th:utext="#{label.results.see.footnote}"/> 1</a></sup>
 				</p>
-				<p class="col-sm-8" th:utext="${#dates.format(dpdSelectedProduct.originalMarketDate, 'yyyy-MM-dd')" >
-					<br/>
-				</p>
+				<p class="col-sm-8" th:utext="${dpdSelectedProduct.originalMarketDate}" />
 			</div>
 		</div>
 	</div>
 
-	<div th:if="${dpdSelectedProduct.statusVO.lotNumber != ''}">
+	<div th:if="${dpdSelectedProduct.lotNumber != null}">
 		<div class="row">
 			<p class="col-sm-4">
 				<strong th:utext="#{label.lot.number}"/>
 				<sup id="fn2-rf"><a class="fn-lnk" href="#fn2"><span class="wb-inv" th:utext="#{label.results.see.footnote}"/> 2</a></sup>
 			</p>
-			<p class="col-sm-8" th:utext="${dpdSelectedProduct.statusVO.lotNumber}">
-				<br/>
-			</p>
+			<p class="col-sm-8" th:utext="${dpdSelectedProduct.lotNumber}" />
 		</div>
 	</div>
 
-    <div th:if="${dpdSelectedProduct.statusVO.expirationDate != null}">
+    <div th:if="${dpdSelectedProduct.expirationDate != null}">
            <div class="row">
                <p class="col-sm-4">
                    <strong th:utext="#{label.expiry.date}"/>
                    <sup id="fn2-rf"><a class="fn-lnk" href="#fn2"><span class="wb-inv" th:utext="#{label.results.see.footnote}"/> 2</a></sup>
                </p>
-               <p class="col-sm-8" th:utext="${#dates.format(dpdSelectedProduct.statusVO.expirationDate, 'yyyy-MM-dd')">
-                   <br/>
-               </p>
+               <p class="col-sm-8" th:utext="${dpdSelectedProduct.expirationDate}" />
            </div>
     </div>
 
@@ -119,29 +109,28 @@
 			  <strong th:utext="#{label.product.brand.name}"/>
 		  </p>
 		  <p class="col-sm-8">
-	<!--			  <div th:if="${dpdSelectedProduct.brandNameLangOfPart != ''}">
-				  <span xml:lang='<%= brandLangOfPart %>' lang='<%= brandLangOfPart %>' th:utext="${dpdSelectedProduct.drugProduct.brandName}"/></span>
-			  </div>
-			  <div th:if="${dpdSelectedProduct.brandNameLangOfPart == ''}" th:utext="${dpdSelectedProduct.drugProduct.brandName}"/>-->
+			  <span th:if="${dpdSelectedProduct.brandNameLangOfPart != ''}">
+				  <span th:xmllang='${dpdSelectedProduct.brandNameLangOfPart}' th:lang='${dpdSelectedProduct.brandNameLangOfPart}' th:utext="${dpdSelectedProduct.brandName}"/>
+			  </span>
+			  <span th:unless="${dpdSelectedProduct.brandNameLangOfPart != ''}" th:utext="${dpdSelectedProduct.brandName}"/>
 		  </p>
 	</div>
 	<div class="row">
-		 <div th:if="${dpdSelectedProduct.drugProduct.descriptor != ''}">
+		 <div th:if="${dpdSelectedProduct.descriptor != null}">
 			 <p class="col-sm-4">
 				 <strong th:utext="#{label.product.description}"/>
 			 </p>
 			 <p class="col-sm-8">
-<!--				 <div th:if="${dpdSelectedProduct.descriptorLangOfPart != ''">
-					 <span xml:lang='<%= descriptorLangOfPart %>' lang='<%= descriptorLangOfPart %>' th:utext="${dpdSelectedProduct.drugProduct.descriptor}"/>
+				 <div th:if="${dpdSelectedProduct.descriptorLangOfPart != ''">
+					 <span xml:lang='${dpdSelectedProduct.descriptorLangOfPart}' lang='${dpdSelectedProduct.descriptorLangOfPart}' th:utext="${dpdSelectedProduct.descriptor}"/>
 				 </div>
-				 <div name="descriptorLangOfPart" th:if="${dpdSelectedProduct.drugProduct.descriptor == ''}"/>
-				 <br/>-->
+				 <div th:if="${dpdSelectedProduct.descriptorLangOfPart == ''" th:utext="${dpdSelectedProduct.descriptor}"/>
 			 </p>
 		 </div>
     </div>
     <!-- if the drug class is not veterinary and the pm does not exist put a label saying the PM is not available -->
-	 <div th:if="${dpdSelectedProduct.pmVO != null}">
-		 <div th:if="${dpdSelectedProduct.pmVO.pmName != ''">
+	<div th:if="${dpdSelectedProduct.isPmAvailable}">
+		<div th:if="${dpdSelectedProduct.pmName != ''">
 			 <span class="help-block" th:utext="#{label.blurb.alternate.format}">
 				 <a th:href="#{link.blurb.alternate.format}"  th:text="#{label.link.blurb.alternate.format}"/>.
 			 </span>
@@ -150,7 +139,7 @@
 					 <strong th:utext="#{label.product.din}"/>
 				 </p>
 				 <p class="col-sm-8">
-					 <span th:utext="${dpdSelectedProduct.drugProduct.drugIdentificationNumber}"/>
+					 <span th:utext="${dpdSelectedProduct.din}"/>
 				 </p>
 			 </div>
 			<div class="row">
@@ -158,33 +147,33 @@
 					<strong th:utext="#{label.product.monograph}"/>
 				</p>
 				<p class="col-sm-8"><strong th:utext="#{label.product.monograph.date}" />
-					<span th:text="${dpdSelectedProduct.pmVO.pmDate}"/>
+					<span th:text="${dpdSelectedProduct.pmDate}"/>
 					<span class="glyphicon glyphicon-paperclip mrgn-lft-xl">
-	        			<a href="#{pmLocation} + ${dpdSelectedProduct.pmVO.pmName}' />" th:text="#{button.viewPM}"/><br/>
-		 			</span>
+						<a href="#{pmLocation} + ${dpdSelectedProduct.pmName}' />" th:text="#{button.viewPM}"/><br/>
+					</span>
 				</p>
 			</div>
-		</div>
-
-		<div th:if="${dpdSelectedProduct.pmVO.pmName == ''}">
-			<div class="row">
-				<p class="col-sm-4">
-					<strong th:utext="#{label.product.din}"/>
-				</p>
-				<p class="col-sm-8" th:utext="${dpdSelectedProduct.drugProduct.drugIdentificationNumber}" >
-					<span class="well well-sm  mrgn-lft-xl" th:utext="#{button.disabledPM}"/>
-				</p>
-			</div>
-		</div>
+		 </div>
 	</div>
 
-	<!-- if the drug class is not veterinary and the pm does not exist only put the din no message -->
-	<div th:if="${dpdSelectedProduct.pmVO == null}">
+	<div th:if="${dpdSelectedProduct.pmName == ''}">
 		<div class="row">
 			<p class="col-sm-4">
 				<strong th:utext="#{label.product.din}"/>
 			</p>
-			<p class="col-sm-8" th:utext="${dpdSelectedProduct.drugProduct.drugIdentificationNumber}">
+			<p class="col-sm-8" th:utext="${dpdSelectedProduct.din}" >
+				<span class="well well-sm  mrgn-lft-xl" th:utext="#{button.disabledPM}"/>
+			</p>
+		</div>
+	</div>
+
+	<!-- if the drug class is not veterinary and the pm does not exist only put the din no message -->
+	<div th:if="${dpdSelectedProduct.pmName == null}">
+		<div class="row">
+			<p class="col-sm-4">
+				<strong th:utext="#{label.product.din}"/>
+			</p>
+			<p class="col-sm-8" th:utext="${dpdSelectedProduct.din}">
 				<span class="well well-sm mrgn-lft-xl" th:utext="#{button.disabledPM}"/>
 			</p>
 		</div>
@@ -279,7 +268,7 @@
 			</logic:empty>-->
 		</p>
 	</div>
-	<div th:if="${dpdSelectedProduct.drugProduct.drugClassE =='Veterinary'}">
+	<div th:if="${dpdSelectedProduct.isVeterinary}">
 		<div class="row">
 			<p class="col-sm-4">
 				<strong th:utext="#{label.product.veterinarian.species}"/>
@@ -331,7 +320,7 @@
 	<aside class="wb-fnote wb-fnote-inited" role="note">
 		<h3 id="fn" th:utext="#{label.results.page.footnotes}"/>
 		<dl>
-			<div th:if="${not dpdSelectedProduct.c}" id="f1">
+			<div th:if="${not dpdSelectedProduct.isRadioPharmaceutical}" id="f1">
 				<div th:if="${not dpdSelectedProduct.isApproved}">
 					<dt id="fn1-dt" th:utext="#{label.results.footnote} + 1" />
 					<dd aria-labelledby="fn1-dt" tabindex="-1" id="fn1">
