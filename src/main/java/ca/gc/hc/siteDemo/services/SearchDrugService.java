@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -171,6 +172,45 @@ public class SearchDrugService {
 				screenDetailBusinessService.getResourceMessage("label.results.no", locale);
 	}
 
+	public Drug convertToDrug(Object o, boolean isFrench)	{
+		Drug drug = new Drug();
+		if (o instanceof DrugBean){
+			DrugBean bean = (DrugBean) o;
+			drug.setPmAvailable(bean.getPmVO()!=null);
+			drug.setPmName(bean.getPmVO() == null? null: bean.getPmVO().getPmName());
+			drug.setDin(bean.getDrugProduct() == null? null: bean.getDrugProduct().getDrugIdentificationNumber());
+			drug.setStatusLangOfPart(appUtils.getLanguageOfPart(bean.getStatusVO().getStatusE(),bean.getStatusVO().getStatusF(),isFrench));
+			drug.setStatus(isFrench ? StringsUtil.substituteIfNull(bean.getStatusVO().getExternalStatus().getExternalStatusF(),bean.getStatusVO().getExternalStatus().getExternalStatusE()) : bean.getStatusVO().getExternalStatus().getExternalStatusE());
+			drug.setRadioPharmaceutical(bean.getDrugProduct().getClassCode().equals(ApplicationGlobals.RADIOPHARMACEUTICAL_CLASS_CODE));
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			drug.setHistoryDate(bean.getStatusVO().getHistoryDate() == null? null: format.format(bean.getStatusVO().getHistoryDate()));
+			drug.setApproved(bean.getStatusVO().getExternalStatus().getExternalStatusId().equals(ApplicationGlobals.APPROVED_STATUS_CODE));
+			String notApplicable = isFrench ? ApplicationGlobals.NOT_APPLICABLE_F : ApplicationGlobals.NOT_APPLICABLE_E;
+			if (drug.isRadioPharmaceutical()){
+				drug.setOriginalMarketDate(notApplicable);
+			} else {
+				drug.setOriginalMarketDate(bean.getStatusVO().getOriginalMarketDate() == null? null : format.format(bean.getStatusVO().getOriginalMarketDate()));
+			}
+			drug.setLotNumber(bean.getStatusVO().getLotNumber());
+			drug.setExpirationDate(bean.getStatusVO().getExpirationDate() == null? null : format.format(bean.getStatusVO().getExpirationDate()));
+			drug.setBrandNameLangOfPart(appUtils.getLanguageOfPart(bean.getDrugProduct().getBrandNameE(), bean.getDrugProduct().getBrandNameF(),isFrench));
+			drug.setBrandName(isFrench ? StringsUtil.substituteIfNull(bean.getDrugProduct().getBrandNameF(), bean.getDrugProduct().getBrandNameE()) :StringsUtil.substituteIfNull(bean.getDrugProduct().getBrandNameE(), bean.getDrugProduct().getBrandNameF()));
+			drug.setDescriptor(isFrench ? StringsUtil.substituteIfNull(bean.getDrugProduct().getDescriptorF(), bean.getDrugProduct().getDescriptorE()) : bean.getDrugProduct().getDescriptorE());
+			drug.setDescriptorLangOfPart(appUtils.getLanguageOfPart(bean.getDrugProduct().getDescriptorE(), bean.getDrugProduct().getDescriptorF(),isFrench));
+			if (bean.getPmVO() != null && bean.getPmVO().getPmDate() != null){
+				drug.setPmDate(format.format(bean.getPmVO().getPmDate()));
+			}
+			drug.setVeterinary(bean.getDrugProduct().getClassCode() == ApplicationGlobals.VETERINARY_CLASS_CODE);
+			drug.setVetSpecies(bean.getVetSpecies());
+			if (bean.getStatusVO().getLotNumber() != null || bean.getStatusVO().getExpirationDate() != null) {
+				drug.setDisplayFootnoteTwo(true);
+			}
+			if ((StringsUtil.emptyForNull(bean.getDrugProduct().getRiskManPlan()).equalsIgnoreCase("Y")) || (StringsUtil.emptyForNull(bean.getDrugProduct().getOpioidManPlan()).equalsIgnoreCase("Y"))) {
+				drug.setDisplayFootnoteSeven(true);
+			}
+		}
+		return drug;
+	}
 	private String getStatus(DrugStatus status, boolean isFrench) {
 		return isFrench ? StringsUtil.substituteIfNull(status.getExternalStatus()
 				.getExternalStatusF(), status.getExternalStatus().getExternalStatusE())
