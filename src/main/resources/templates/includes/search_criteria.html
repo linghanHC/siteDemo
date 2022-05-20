@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/layout}">
+
+<body>
+<th:block th:fragment="searchCriteriaDisplay">
+	<h2 th:utext="#{label.results.criteria}"/>
+	<div th:if="${dpdSearchCriteria.din != null}">
+		<p th:utext="#{label.criteria.drug.din} + ' ' + ${dpdSearchCriteria.din}"/>
+	</div>
+	<div th:unless="${dpdSearchCriteria.din != null}">
+		<ul class="noBullet">
+			<div th:if="${dpdSearchCriteria.atc != null}">
+				<li th:utext="#{label.criteria.drug.atc} + ' ' + ${dpdSearchCriteria.atc}"/>
+			</div>
+			<div th:unless="${dpdSearchCriteria.atc != null}">
+				<li><div class="indent2" th:utext="#{label.criteria.drug.status} + ' ' + ${criteriaDisplay.selectedStatuses}"/></li>
+				<div th:if="${dpdSearchCriteria.companyName != null}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.company} + ' ' + ${dpdSearchCriteria.companyName}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.brandName != null}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.product} + ' ' + ${dpdSearchCriteria.brandName}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.activeIngredient != null}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.ai} + ' ' + ${dpdSearchCriteria.activeIngredient}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.aigNumber != null}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.aig} + ' ' + ${dpdSearchCriteria.aigNumber}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.biosimDrugSearch != null}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.biosimDrug} + ' ' + ${dpdSearchCriteria.biosimDrugSearch}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.drugClass}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.class} + ' ' + ${criteriaDisplay.selectedDrugClasses}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.route}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.route} + ' ' + ${criteriaDisplay.selectedRoutes}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.dosage}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.dosage} + ' ' + ${criteriaDisplay.selectedDosageForms}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.schedule}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.schedule} + ' ' + ${criteriaDisplay.selectedSchedules}"/></li>
+				</div>
+				<div th:if="${dpdSearchCriteria.vetSpecies}">
+					<li><div class="indent2" th:utext="#{label.criteria.drug.species} + ' ' + ${criteriaDisplay.selectedSpecies}"/></li>
+				</div>
+			</div>
+		</ul>
+	</div>
+
+</th:block>
+</body>
+

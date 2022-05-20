@@ -31,50 +31,7 @@
             </logic:present>
         </div> -->
 
-	<h2 th:utext="#{label.results.criteria}"/>
-	<div th:if="${session.searchForm.din != ''}">
-		<p th:utext="#{label.criteria.drug.din} + ' ' + ${session.searchForm.din}"/>
-	</div>
-	<div th:unless="${session.searchForm.din != ''}">
-		<ul class="noBullet">
-			<div th:if="${session.searchForm.atc != ''}">
-				<li th:utext="#{label.criteria.drug.atc} + ' ' + ${session.searchForm.atc}"/>
-			</div>
-			<div th:unless="${session.searchForm.atc != ''}">
-				<li><div class="indent2" th:utext="#{label.criteria.drug.status} + ' ' + ${session.searchForm.selectedStatusText}"/></li>
-				<div th:if="${session.searchForm.companyName}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.company} + ' ' + ${session.searchForm.companyName}"/></li>
-				</div>
-				<div th:if="${session.searchForm.brandName != ''}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.product} + ' ' + ${session.searchForm.brandName}"/></li>
-				</div>
-				<div th:if="${session.searchForm.activeIngredient != ''}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.ai} + $' ' + {session.searchForm.activeIngredient}"/></li>
-				</div>
-				<div th:if="${session.searchForm.aigNumber != ''}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.aig} + ' ' + ${session.searchForm.aigNumber}"/></li>
-				</div>
-				<div th:if="${session.searchForm.biosimDrugSearch}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.biosimDrug} + ' ' + #{label.results.yes}"/></li>
-				</div>
-				<div th:if="${session.searchForm.drugClass}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.class} + ' ' + ${session.searchForm.drugClass}"/></li>
-				</div>
-				<div th:if="${session.searchForm.route}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.route} + ' ' + ${session.searchForm.route}"/></li>
-				</div>
-				<div th:if="${session.searchForm.dosage}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.dosage} + ' ' + ${session.searchForm.dosage}"/></li>
-				</div>
-				<div th:if="${session.searchForm.schedule}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.schedule} + ' ' + ${session.searchForm.schedule}"/></li>
-				</div>
-				<div th:if="${session.searchForm.vetSpecies}">
-					<li><div class="indent2" th:utext="#{label.criteria.drug.species} + ' ' + ${session.searchForm.vetSpecies}"/></li>
-				</div>
-			</div>
-		</ul>
-	</div>
+		<th:block th:insert="/includes/search_criteria :: searchCriteriaDisplay"></th:block>
 
         <h2><span th:utext="#{label.search.results}"/></h2>
 

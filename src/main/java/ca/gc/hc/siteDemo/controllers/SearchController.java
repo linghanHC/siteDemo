@@ -11,7 +11,6 @@ import ca.gc.hc.siteDemo.util.ApplicationGlobals;
 import ca.gc.hc.siteDemo.util.StringsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,22 +34,13 @@ public class SearchController extends BaseController {
 
 	@Autowired
 	private SearchDrugService searchService;
-
 	@Autowired
 	private MasterDataService mdService;
-
 	@Autowired
 	private JsonBusinessService jsonBusinessService;
-	
 	@Autowired
 	private AppUtils appUtils;
 	
-//	@RequestMapping("test")
-//	public String displaytest(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
-//						  Locale locale) {
-//		return "test";
-//	}
-
 	@RequestMapping(Constants.SEARCH_URL_MAPPING)
 	public String displaySearchPage(HttpServletRequest request, HttpServletResponse response, Model model, HttpSession session,
 						  Locale locale) {
@@ -69,25 +59,13 @@ public class SearchController extends BaseController {
 
 			logAllSessionAttributes(session);
 
-			MasterData md = null;
-			if (session.getAttribute("masterData") == null) {
-				md = mdService.refreshAllSearchPageLists();
-				session.setAttribute("masterData", md);
-			} else {
-				md = (MasterData) session.getAttribute("masterData");
-			}
-			model.addAttribute("statuses", appUtils.isLanguageFrench(locale) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
-					md.getStatusMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("drugClasses", appUtils.isLanguageFrench(locale) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
-					md.getDrugClassMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("routes", appUtils.isLanguageFrench(locale) ? md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_FR) :
-					md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("dosages", appUtils.isLanguageFrench(locale) ? md.getUniqueFormsMap().get(ApplicationGlobals.LANG_FR) :
-					md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("schedules", appUtils.isLanguageFrench(locale) ? md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_FR) :
-					md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_EN));
-			model.addAttribute("species", appUtils.isLanguageFrench(locale) ? md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_FR) :
-					md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_EN));
+			MasterData md = getMasterData(session);
+			model.addAttribute("statuses", getStatusList(md, locale));
+			model.addAttribute("drugClasses", getDrugClassList(md, locale));
+			model.addAttribute("routes", getRouteList(md, locale));
+			model.addAttribute("dosages", getDosageFormList(md, locale));
+			model.addAttribute("schedules", getScheduleList(md, locale));
+			model.addAttribute("species", getSpeciesList(md, locale));
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,6 +73,45 @@ public class SearchController extends BaseController {
 		}
 
 		return Constants.SEARCH_VIEW;
+	}
+
+	private MasterData getMasterData(HttpSession session) throws Exception {
+		MasterData md = null;
+		if (session.getAttribute("masterData") == null) {
+			md = mdService.refreshAllSearchPageLists();
+			session.setAttribute("masterData", md);
+		} else {
+			md = (MasterData) session.getAttribute("masterData");
+		}
+		return md;
+	}
+
+	private List<LabelValueBean> getStatusList(MasterData md, Locale locale) {
+		return appUtils.isLanguageFrench(locale) ? md.getStatusMap().get(ApplicationGlobals.LANG_FR) :
+				md.getStatusMap().get(ApplicationGlobals.LANG_EN);
+	}
+
+	private List<LabelValueBean> getDrugClassList(MasterData md, Locale locale) {
+		return appUtils.isLanguageFrench(locale) ? md.getDrugClassMap().get(ApplicationGlobals.LANG_FR) :
+				md.getDrugClassMap().get(ApplicationGlobals.LANG_EN);
+	}
+
+	private List<LabelValueBean> getRouteList(MasterData md, Locale locale) {
+		return appUtils.isLanguageFrench(locale) ? md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_FR) :
+				md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN);
+	}
+
+	private List<LabelValueBean> getDosageFormList(MasterData md, Locale locale) {
+		return appUtils.isLanguageFrench(locale) ? md.getUniqueFormsMap().get(ApplicationGlobals.LANG_FR) :
+				md.getUniqueRoutesMap().get(ApplicationGlobals.LANG_EN);
+	}
+	private List<LabelValueBean> getScheduleList(MasterData md, Locale locale) {
+		return appUtils.isLanguageFrench(locale) ? md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_FR) :
+				md.getUniqueSchedulesMap().get(ApplicationGlobals.LANG_EN);
+	}
+	private List<LabelValueBean> getSpeciesList(MasterData md, Locale locale) {
+		return appUtils.isLanguageFrench(locale) ? md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_FR) :
+				md.getUniqueSpeciesMap().get(ApplicationGlobals.LANG_EN);
 	}
 
 	@PostMapping("/search")
@@ -112,7 +129,6 @@ public class SearchController extends BaseController {
 //		}
 		log.debug("==doSearch "+searchForm.toString());
 
-		request.getSession().setAttribute("searchForm", searchForm);
 		// copied from SearchAction.execute()
 //		HttpSession session = request.getSession();
 //		ActionForward forward = new ActionForward();
@@ -179,7 +195,7 @@ public class SearchController extends BaseController {
 
 					criteria = new SearchCriteriaBean();
 
-					BeanUtils.copyProperties(searchForm, criteria);
+					searchService.copyFormValuesToSearchCriteria(searchForm, criteria, locale);
 //					session.setAttribute(ApplicationGlobals.SELECTED_STATUS,
 //							criteria.getStatusCode());
 //					/*
@@ -224,6 +240,7 @@ public class SearchController extends BaseController {
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
 				forward = Constants.PRODUCT_INFO_URL_MAPPING;
 			} else {
+				redirectAttributes.addFlashAttribute(ApplicationGlobals.USER_SEARCH_CRITERIA, criteria);
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SEARCH_RESULT_KEY, list);
 				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 			}
@@ -272,8 +289,8 @@ public class SearchController extends BaseController {
 	}
 
 	@RequestMapping(Constants.SEARCH_RESULTS_URL_MAPPING)
-	public String displaySearchResult(Model model, Locale locale, HttpServletRequest request) throws Exception {
-		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
+	public String displaySearchResult(Model model, Locale locale, HttpServletRequest request, HttpSession session) throws Exception {
+//		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
 //		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
 
 		log.debug("==displaySearchResult");
@@ -281,8 +298,22 @@ public class SearchController extends BaseController {
 			log.debug("drug bean is not in the redirect flash attribute");
 			return redirectTo(Constants.SEARCH_VIEW);
 		} else {
+			// for debugging todo remove
 			List<DrugSummary> list = (List<DrugSummary>) model.asMap().get(ApplicationGlobals.SEARCH_RESULT_KEY);
 			log.debug(list.size()+"");
+			SearchCriteriaBean criteria = (SearchCriteriaBean) model.asMap().get(ApplicationGlobals.USER_SEARCH_CRITERIA);
+			log.debug(criteria.toString());
+
+			MasterData md = getMasterData(session);
+			SearchCriteria criteriaDisplay = new SearchCriteria();
+			criteriaDisplay.setSelectedStatuses(getConcatenatedLabels(criteria.getStatus(), this.getStatusList(md, locale), locale));
+			criteriaDisplay.setSelectedDrugClasses(getConcatenatedLabels(criteria.getDrugClass(), this.getDrugClassList(md, locale), locale));
+			criteriaDisplay.setSelectedRoutes(getConcatenatedLabels(criteria.getRoute(), this.getRouteList(md, locale), locale));
+			criteriaDisplay.setSelectedDosageForms(getConcatenatedLabels(criteria.getDosage(), this.getDosageFormList(md, locale), locale));
+			criteriaDisplay.setSelectedSchedules(getConcatenatedLabels(criteria.getSchedule(), this.getScheduleList(md, locale), locale));
+			criteriaDisplay.setSelectedSpecies(getConcatenatedLabels(criteria.getVetSpecies(), this.getSpeciesList(md, locale), locale));
+
+			model.addAttribute("criteriaDisplay", criteriaDisplay);
 		}
 
 		return Constants.SEARCH_RESULTS_URL_MAPPING;
@@ -290,8 +321,8 @@ public class SearchController extends BaseController {
 
 	@RequestMapping(Constants.PRODUCT_INFO_URL_MAPPING)
 	public String displayProductInfo(Model model, Locale locale, HttpServletRequest request) throws Exception {
-		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
-		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
+//		SearchForm searchForm = (SearchForm) request.getSession().getAttribute("searchForm");
+//		searchForm.setSelectedStatusText(getSelectedStatusText(searchForm.getStatus(),locale, ((MasterData)request.getSession().getAttribute("masterData")).getStatusMap().get(locale.getLanguage())));
 
 		log.debug("==displayProductInfo");
 		if (model.asMap().get(ApplicationGlobals.SELECTED_PRODUCT) == null) {
@@ -348,7 +379,6 @@ public class SearchController extends BaseController {
 			} else {
 				log.debug("Total match found: [" + list.size() + "].");
 				DrugBean bean = (DrugBean) list.get(0);
-//				session.setAttribute(ApplicationGlobals.SELECTED_PRODUCT, ActionUtil.postProcessDrugBean(bean, request));
 				model.addAttribute(ApplicationGlobals.SELECTED_PRODUCT, bean);
 			}
 		} catch (Exception e) {
@@ -366,19 +396,18 @@ public class SearchController extends BaseController {
 		return Constants.PRODUCT_INFO_URL_MAPPING;
 	}
 
-	//TODO: from SearchCriteriaBean
-	private String getSelectedStatusText(String[] status, Locale locale, List<LabelValueBean> statusList) throws Exception{
-		String[] statusEnumeration = new String[status.length];
+	private String getConcatenatedLabels(String[] valArray, List<LabelValueBean> labelValueList, Locale locale) throws Exception{
+		String[] labels = new String[valArray.length];
 		int i = 0;
-		for (String s : status) {
-			for (LabelValueBean statusLabel : statusList) {
-				if (s.equals(statusLabel.getValue())) {
-					statusEnumeration[i] = statusLabel.getLabel();
+		for (String s : valArray) {
+			for (LabelValueBean labelValue : labelValueList) {
+				if (s.equals(labelValue.getValue())) {
+					labels[i] = labelValue.getLabel();
 					i++;
 				}
 			}
 		}
-		return enumerateThisStringArray(statusEnumeration, locale);
+		return enumerateThisStringArray(labels, locale);
 	}
 
 	private String enumerateThisStringArray(String[] anAra, Locale locale) {

@@ -21,7 +21,7 @@ public class SearchForm implements Serializable
     private String activeIngredient = null;
     private String aigNumber = null;
 
-    private boolean biosimDrugSearch = false;
+    private String biosimDrugSearch = null;
     private String[] status = new String[]{"0"};
     private String[] dosage = new String[]{"0"};
     private String[] schedule = new String[]{"0"};
@@ -147,12 +147,19 @@ public class SearchForm implements Serializable
             status = string;
     }
 
-    public boolean isBiosimDrugSearch() {
-        return biosimDrugSearch;
+    public String getBiosimDrugSearch()
+    {
+
+        return this.biosimDrugSearch;
     }
 
-    public void setBiosimDrugSearch(boolean biosimDrugSearch) {
-        this.biosimDrugSearch = biosimDrugSearch;
+    /**
+     * @param string
+     */
+    public void setBiosimDrugSearch(String string)
+    {
+        if( string != null)
+            biosimDrugSearch = string.trim();
     }
 
     public String getSelectedStatusText() {

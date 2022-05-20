@@ -9,16 +9,17 @@ package ca.gc.hc.siteDemo.services;
 
 import ca.gc.hc.siteDemo.bean.*;
 import ca.gc.hc.siteDemo.dao.SearchDrugDao;
+import ca.gc.hc.siteDemo.forms.SearchForm;
 import ca.gc.hc.siteDemo.models.ActiveIngredients;
 import ca.gc.hc.siteDemo.models.DrugProduct;
 import ca.gc.hc.siteDemo.models.DrugStatus;
 import ca.gc.hc.siteDemo.models.Schedule;
-import ca.gc.hc.siteDemo.util.ActionUtil;
 import ca.gc.hc.siteDemo.util.AppUtils;
 import ca.gc.hc.siteDemo.util.ApplicationGlobals;
 import ca.gc.hc.siteDemo.util.StringsUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,14 +27,13 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
 public class SearchDrugService {
-	private static Logger log = LoggerFactory.getLogger(SearchDrugService.class);
+	private static final Logger log = LoggerFactory.getLogger(SearchDrugService.class);
 
 	@Autowired
 	private SearchDrugDao dao;
@@ -68,15 +68,6 @@ public class SearchDrugService {
 			results = dao.SearchByCriteria(criteria, request);
 //			log.debug("1==>"+jsonBusinessService.serializeObjectToJsonString(results));
 		}
-		// todo should these to be saved in session??
-		request.getSession().setAttribute(ApplicationGlobals.RESULT_COUNT_KEY,
-				results.size());
-		request.getSession().setAttribute(
-				ApplicationGlobals.USER_SEARCH_CRITERIA, criteria);
-		request.getSession().setAttribute(
-				ApplicationGlobals.QUERY_SEARCH_CRITERIA, criteria);
-		request.getSession().setAttribute(ApplicationGlobals.LAST_SEARCH_CRITERIA, criteria);
-
 		return results;
 	}
 
@@ -121,8 +112,6 @@ public class SearchDrugService {
 				// re-query for actual results
 				resultsList = dao.SearchByCriteria(criteria, request);
 				log.debug("2==>" + jsonBusinessService.serializeObjectToJsonString(resultsList));
-				request.getSession().setAttribute(
-						ApplicationGlobals.RESULT_COUNT_KEY, resultsList.size());
 			}
 		}
 //		List<Product> productList = Arrays.asList(new Product(23, "potatoes"),
@@ -142,12 +131,6 @@ public class SearchDrugService {
 
 		return newlist;
 	}
-
-//	private User converterUser (DrugSummaryBean old) {
-//		User u = new User();
-//
-//		return u;
-//	}
 
 	private DrugSummary converter(Object old, boolean isFrench, Locale locale) {
 		DrugSummary drugSummary = new DrugSummary();
@@ -337,4 +320,14 @@ public class SearchDrugService {
 			return null;
 	}
 
+	public void copyFormValuesToSearchCriteria(SearchForm searchForm, SearchCriteriaBean criteria, Locale locale) {
+		BeanUtils.copyProperties(searchForm, criteria);
+		String tmpBiosimDrugSearch = criteria.getBiosimDrugSearch();
+		log.debug(tmpBiosimDrugSearch);
+		if (tmpBiosimDrugSearch != null && tmpBiosimDrugSearch.length() > 0) {
+			// Only when Biosimilar biologic drug is selected, String value will be
+			// displayed at the search result page
+			criteria.setBiosimDrugSearch(screenDetailBusinessService.getResourceMessage("value.yes", locale));
+		}
+	}
 }

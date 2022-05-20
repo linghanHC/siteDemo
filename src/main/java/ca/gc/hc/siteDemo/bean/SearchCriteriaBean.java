@@ -228,37 +228,28 @@ public class SearchCriteriaBean extends LocaleDependantObject implements Seriali
     companyCode = long1;
   }
 
-  /**
-   * Set Biosimilar Drug
-   *
-   * @param string
-   */
-  public void setBiosimDrugSearch(String string) {
-    if (string != null && string.length() > 0) {
-      // Only when Biosimilar biologic drug is selected, String value will be
-      // displayed at the search result page
-      this.biosimDrugSearch = localisedProperty("Yes", "Oui");
-    } else
-      // This is used to determine what search criteria shall apply
-      this.biosimDrugSearch = null;
+  public void setBiosimDrugSearch(String biosimDrugSearch) {
+    this.biosimDrugSearch = biosimDrugSearch;
   }
 
   /**
    * @return Well formated object content
    */
   public String toString() {
+    //todo
     return new ToStringBuilder(this).append("drugCode", getDrugCode()).append("din", getDin()).append("atc", getAtc())
         .append("companyCode", getCompanyCode()).append("companyName", getCompanyName())
         // .append("status", status == null ? null : getStatus().toString())
         .append("status", status == null ? null : Arrays.toString(getStatus())).append("brandName", getBrandName())
         .append("activeIngredient", getActiveIngredient()).append("aigNumber", getAigNumber())
-        .append("biosimDrug", getBiosimDrugSearch()).append("route", route == null ? null : getRouteEnumeration())
-        .append("dosage", dosage == null ? null : getDosageEnumeration())
-        .append("schedule", schedule == null ? null : getScheduleEnumeration())
+//        .append("biosimDrug", getBiosimDrugSearch()).append("route", route == null ? null : getRouteEnumeration())
+//        .append("dosage", dosage == null ? null : getDosageEnumeration())
+//        .append("schedule", schedule == null ? null : getScheduleEnumeration())
         // .append("vetSpecies", getVetSpecies())
-        .append("vetSpecies", vetSpecies == null ? null : getVetSpeciesEnumeration())
+//        .append("vetSpecies", vetSpecies == null ? null : getVetSpeciesEnumeration())
         // .append("vetSubSpecies", getVetSubSpecies())
-        .append("drugClass", drugClass == null ? null : getDrugClassEnumeration()).toString();
+//        .append("drugClass", drugClass == null ? null : getDrugClassEnumeration())
+        .toString();
   }
 
   // updated for an array of values SL/2009-09-10
@@ -305,65 +296,6 @@ public class SearchCriteriaBean extends LocaleDependantObject implements Seriali
     this.route = route;
   }
 
-  /**
-   * @author Sylvain Lariviere 2009-09-30
-   * @return All the routes of administration as a single String
-   */
-  public String getRouteEnumeration() {
-    return enumerateThisStringArray(getRoute());
-  }
-
-  /**
-   * @author Sylvain Lariviere 2009-09-30
-   * @param anAra String array
-   * @return A String containing all the passed array elements, separated by a
-   *         comma and space, or the selectAll label, if no individual item was
-   *         selected
-   */
-  // todo move this to a util class
-  private String enumerateThisStringArray(String[] anAra) {
-    String result = "";
-
-    if (anAra != null && anAra.length > 0) {
-      if (anAra.length == 1 && anAra[0].toString().equals("0")) {
-        // no individual item was selected: just return the selectAll label
-        result = "Select all"; // todo ApplicationGlobals.instance().getSelectAllLabel();
-      } else {
-        for (int i = 0; i < anAra.length; i++) {
-          if (!"0".equals(anAra[i])) { // exclude value 0: it means "Select All" and was included in the selection
-            String anAraLabel = anAra[i].replace("/Hc", "/HC");
-            result = result + anAraLabel + ", ";
-          }
-        }
-        result = result.substring(0, result.length() - 2); // remove last comma
-      }
-    } else {
-      result = null;
-    }
-
-    return result;
-  }
-
-  /**
-   * @author Sylvain Lariviere 2009-09-30
-   * @return All the dosage forms as a single String
-   */
-  public String getDosageEnumeration() {
-    return enumerateThisStringArray(getDosage());
-  }
-
-  /**
-   * @author Sylvain Lariviere 2009-09-30
-   * @return All the schedules as a single String
-   */
-  public String getScheduleEnumeration() {
-    return enumerateThisStringArray(getSchedule());
-  }
-
-  public String getVetSpeciesEnumeration() {
-    return enumerateThisStringArray(getVetSpecies());
-  }
-
   public String[] getStatusCode() {
     boolean selectAll = false;
     for (String status : this.status) {
@@ -378,22 +310,6 @@ public class SearchCriteriaBean extends LocaleDependantObject implements Seriali
     }
   }
 
-  public String getStatusEnumeration() throws Exception {
-    String[] statusEnumeration = new String[this.status.length];
-    // TODO
-//    List<LabelValueBean> statusList = ApplicationGlobals.instance().getStatus();
-//    int i = 0;
-//    for (String s : this.status) {
-//      for (LabelValueBean statusLabel : statusList) {
-//        if (s.equals(statusLabel.getValue())) {
-//          statusEnumeration[i] = statusLabel.getLabel();
-//          i++;
-//        }
-//      }
-//    }
-    return enumerateThisStringArray(statusEnumeration);
-  }
-
   public void setStatusCode(String[] statusCode) {
     this.statusCode = statusCode;
   }
@@ -406,11 +322,4 @@ public class SearchCriteriaBean extends LocaleDependantObject implements Seriali
     return drugClass;
   }
 
-  /**
-   * @author Sylvain Lariviere 2014-10-20
-   * @return All the drug classes as a single String
-   */
-  public String getDrugClassEnumeration() {
-    return enumerateThisStringArray(getDrugClass());
-  }
 }
