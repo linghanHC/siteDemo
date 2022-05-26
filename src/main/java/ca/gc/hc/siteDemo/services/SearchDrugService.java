@@ -77,10 +77,6 @@ public class SearchDrugService {
 		if (useLocalTestData) {
 			String jsonString = localTestDataBusinessService.getMultiDrugsTestData();
 			resultsList = jsonBusinessService.deserializeJsonStringToObjectList(jsonString, DrugSummaryBean[].class);
-//			log.debug("0==>"+resultsList.size());
-			// todo cleanup session?
-			request.getSession().setAttribute(
-					ApplicationGlobals.RESULT_COUNT_KEY, resultsList.size());
 		} else {
 			/*
 			 * Single quotes in SQL will raise an Oracle error. Double
@@ -97,9 +93,6 @@ public class SearchDrugService {
 //		request.getSession().setAttribute(ApplicationGlobals.LAST_SEARCH_CRITERIA, criteria);
 
 			int resultsSize = dao.getQueryResultsCount(criteria);
-//		request.getSession().setAttribute(
-//				ApplicationGlobals.RESULT_COUNT_KEY, resultsSize);
-
 			// Paginate if the result size is greater than the value set
 			// for DataTable server processing
 			if (resultsSize > 0
@@ -112,28 +105,13 @@ public class SearchDrugService {
 					&& resultsSize < serverSideThreshold) {
 				// re-query for actual results
 				resultsList = dao.SearchByCriteria(criteria, request);
-				log.debug("2==>" + jsonBusinessService.serializeObjectToJsonString(resultsList));
+//				log.debug("2==>" + jsonBusinessService.serializeObjectToJsonString(resultsList));
 			}
 		}
-//		List<Product> productList = Arrays.asList(new Product(23, "potatoes"),
-//				new Product(14, "orange"), new Product(13, "lemon"),
-//				new Product(23, "bread"), new Product(13, "sugar"));
-
-//		List<User> collectorCollection =
-//				productList.stream().map(p-> converterUser(p)).collect(Collectors.toList());
-
-		boolean isFrench = appUtils.isLanguageFrench(locale);
-		List<DrugSummary> newlist =
-				(List<DrugSummary>) resultsList.stream().map(p -> converter(p, isFrench, locale)).collect(Collectors.toList());
-
-		//  DrugSummaryBean => DrugSummary
-
-//		log.debug(newlist.toString());
-
-		return newlist;
+		return resultsList;
 	}
 
-	private DrugSummary converter(Object old, boolean isFrench, Locale locale) {
+	public DrugSummary converter(Object old, boolean isFrench, Locale locale) {
 		DrugSummary drugSummary = new DrugSummary();
 		if (old instanceof DrugSummaryBean) {
 			DrugSummaryBean bean = (DrugSummaryBean) old;

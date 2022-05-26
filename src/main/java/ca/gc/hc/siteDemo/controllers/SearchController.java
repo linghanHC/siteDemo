@@ -26,6 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 public class SearchController extends BaseController {
@@ -226,23 +227,17 @@ public class SearchController extends BaseController {
 					}
 
 			log.debug("Total match found: [" + list.size() + "].");
-
-//			if (list.size() == 0) {
-//						request.getSession().setAttribute(
-//								ApplicationGlobals.RESULT_COUNT_KEY, 0);
-//						// A "No match found" message will display in the
-//						// results page
-//						return mapping.findForward("multiplematch");
-
-//			} else
+			boolean isFrench = appUtils.isLanguageFrench(locale);
 			if (list.size() == 1) {
 				DrugBean bean = (DrugBean) list.get(0);
-				Drug drug = searchService.convertToDrug(bean, appUtils.isLanguageFrench(locale));
+				Drug drug = searchService.convertToDrug(bean, isFrench);
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.SELECTED_PRODUCT, drug);
 				forward = Constants.PRODUCT_INFO_URL_MAPPING;
 			} else {
+				List<DrugSummary> newlist =
+						(List<DrugSummary>) list.stream().map(p -> searchService.converter(p, isFrench, locale)).collect(Collectors.toList());
 				redirectAttributes.addFlashAttribute(ApplicationGlobals.USER_SEARCH_CRITERIA, criteria);
-				redirectAttributes.addFlashAttribute(ApplicationGlobals.SEARCH_RESULT_KEY, list);
+				redirectAttributes.addFlashAttribute(ApplicationGlobals.SEARCH_RESULT_KEY, newlist);
 				forward = Constants.SEARCH_RESULTS_URL_MAPPING;
 			}
 
@@ -332,7 +327,7 @@ public class SearchController extends BaseController {
 		return Constants.PRODUCT_INFO_URL_MAPPING;
 	}
 
-	@RequestMapping(Constants.INFO_URL_MAPPING+"{code}")
+	@RequestMapping(Constants.INFO_URL_MAPPING+"/{code}")
 	public String searchByDrugCode(Model model, HttpServletRequest request, Locale locale, @PathVariable Long code) throws Exception {
 		log.debug("==searchByDrugCode code="+code);
 
